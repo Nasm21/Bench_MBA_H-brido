@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark MBA — Universidad Autónoma de Occidente · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+:root{
+  --primary:#8C0F13;--accent:#C0151A;
+  --sidebar-bg:#111111;--bg:#f0f2f5;
+  --card-bg:#ffffff;--text:#1a1a2e;--text-muted:#6b7280;
+  --border:#e5e7eb;--shadow:0 2px 14px rgba(0,0,0,0.07);
+  --shadow-hover:0 8px 32px rgba(140,15,19,0.14);
+  --blue:#1d4ed8;--blue-light:#dbeafe;
+  --green:#15803d;--green-light:#dcfce7;
+  --gold:#d97706;--gold-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;
+  --purple:#7c3aed;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;}
+/* SIDEBAR */
+#sidebar{
+  width:256px;min-width:256px;background:var(--sidebar-bg);
+  position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;z-index:100;
+}
+.sidebar-logo{
+  padding:24px 20px 16px;
+  border-bottom:1px solid #2a2a2a;
+}
+.sidebar-logo h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:16px;font-weight:700;color:#fff;
+  text-transform:uppercase;letter-spacing:1px;line-height:1.2;
+}
+.sidebar-logo .badge-modal{
+  display:inline-block;margin-top:6px;
+  background:#C0151A;color:#fff;
+  font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.nav-section{padding:16px 0 0;}
+.nav-label{
+  font-size:9px;font-weight:700;letter-spacing:2px;
+  color:#4b4b4b;padding:0 20px 6px;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 20px;cursor:pointer;
+  color:#9ca3af;font-size:13px;font-weight:500;
+  transition:all .2s;border-left:3px solid transparent;
+  text-decoration:none;
+}
+.nav-item:hover,.nav-item.active{
+  background:rgba(192,21,26,0.12);color:#fff;
+  border-left-color:#C0151A;
+}
+.nav-item .ico{font-size:15px;width:20px;text-align:center;}
+.sidebar-footer{
+  margin-top:auto;padding:16px 20px;
+  border-top:1px solid #2a2a2a;
+  font-size:10px;color:#4b4b4b;line-height:1.6;
+}
+/* TOPBAR */
+#topbar{
+  position:fixed;top:0;left:256px;right:0;height:56px;
+  background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;z-index:90;box-shadow:0 1px 8px rgba(0,0,0,.06);
+}
+.topbar-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:700;color:var(--primary);
+  text-transform:uppercase;letter-spacing:.5px;
+}
+#btn-pdf{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;border:none;padding:8px 18px;border-radius:6px;
+  font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .2s;
+}
+#btn-pdf:hover{opacity:.88;transform:translateY(-1px);}
+/* MAIN */
+#main{
+  margin-left:256px;padding-top:56px;
+  width:calc(100% - 256px);min-height:100vh;
+}
+.section{
+  padding:32px 28px 24px;
+  border-bottom:1px solid var(--border);
+}
+.section:last-child{border-bottom:none;}
+.section-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:26px;font-weight:800;color:var(--primary);
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:6px;
+}
+.section-sub{
+  font-size:13px;color:var(--text-muted);
+  margin-bottom:24px;
+  border-bottom:2px solid var(--border);
+  padding-bottom:12px;
+}
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#8C0F13 0%,#C0151A 50%,#1a1a2e 100%);
+  padding:40px 28px 32px;
+  color:#fff;
+}
+.hero-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:28px;flex-wrap:wrap;gap:12px;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:36px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;line-height:1.1;
+}
+.hero-subtitle{font-size:14px;opacity:.8;margin-top:4px;}
+.viability-badge{
+  background:rgba(21,128,61,.85);
+  border:2px solid #4ade80;color:#fff;
+  padding:10px 20px;border-radius:8px;
+  text-align:center;font-weight:700;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:16px;letter-spacing:.5px;
+  white-space:nowrap;
+}
+.viability-badge small{display:block;font-size:10px;font-weight:400;opacity:.8;}
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+.kpi-card{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  border-top:3px solid rgba(255,255,255,.5);
+  border-radius:10px;padding:16px 14px;
+  text-align:center;color:#fff;
+}
+.kpi-card.blue{border-top-color:#60a5fa;}
+.kpi-card.green{border-top-color:#4ade80;}
+.kpi-card.orange{border-top-color:#fb923c;}
+.kpi-card.purple{border-top-color:#c084fc;}
+.kpi-card .val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:32px;font-weight:800;line-height:1;
+}
+.kpi-card .lbl{font-size:11px;opacity:.8;margin-top:4px;line-height:1.3;}
+.kpi-card .trend{
+  font-size:10px;margin-top:6px;opacity:.9;font-weight:600;
+}
+.kpi-card .trend.up{color:#4ade80;}
+.kpi-card .trend.warn{color:#fb923c;}
+.kpi-card .trend.down{color:#f87171;}
+/* SECONDARY KPI */
+.kpi-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi-card2{
+  background:var(--card-bg);border-radius:10px;
+  padding:18px 16px;border-top:4px solid var(--primary);
+  box-shadow:var(--shadow);text-align:center;
+}
+.kpi-card2.blue{border-top-color:var(--blue);}
+.kpi-card2.green{border-top-color:var(--green);}
+.kpi-card2.orange{border-top-color:var(--gold);}
+.kpi-card2.purple{border-top-color:var(--purple);}
+.kpi-card2 .val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:36px;font-weight:800;color:var(--primary);
+}
+.kpi-card2.blue .val{color:var(--blue);}
+.kpi-card2.green .val{color:var(--green);}
+.kpi-card2.orange .val{color:var(--gold);}
+.kpi-card2.purple .val{color:var(--purple);}
+.kpi-card2 .lbl{font-size:12px;color:var(--text-muted);margin-top:4px;}
+.kpi-card2 .trend{font-size:11px;font-weight:600;margin-top:5px;}
+.kpi-card2 .trend.up{color:var(--green);}
+.kpi-card2 .trend.warn{color:var(--gold);}
+.kpi-card2 .trend.down{color:var(--red);}
+/* INSIGHT BOXES */
+.insight{
+  display:flex;gap:14px;padding:14px 16px;
+  border-radius:8px;margin-bottom:12px;align-items:flex-start;
+}
+.insight.blue{background:var(--blue-light);border-left:4px solid var(--blue);}
+.insight.green{background:var(--green-light);border-left:4px solid var(--green);}
+.insight.orange{background:var(--gold-light);border-left:4px solid var(--gold);}
+.insight.red{background:var(--red-light);border-left:4px solid var(--red);}
+.insight.gold{background:#fffbeb;border-left:4px solid #f59e0b;}
+.insight .ico{font-size:20px;flex-shrink:0;margin-top:1px;}
+.insight .content h4{font-size:13px;font-weight:700;margin-bottom:3px;}
+.insight.blue .content h4{color:#1e40af;}
+.insight.green .content h4{color:#166534;}
+.insight.orange .content h4{color:#92400e;}
+.insight.red .content h4{color:#7f1d1d;}
+.insight.gold .content h4{color:#78350f;}
+.insight .content p{font-size:12px;line-height:1.5;color:var(--text-muted);}
+/* REC BOX */
+.rec-box{
+  background:linear-gradient(135deg,var(--primary),#1a1a2e);
+  border-radius:12px;padding:24px 28px;color:#fff;
+  margin-top:16px;
+}
+.rec-box h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:10px;
+}
+.rec-box p{font-size:13px;opacity:.9;margin-bottom:12px;line-height:1.5;}
+.rec-box ul{list-style:none;padding:0;}
+.rec-box ul li{
+  font-size:13px;padding:5px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  opacity:.9;display:flex;align-items:flex-start;gap:8px;
+}
+.rec-box ul li::before{content:"→";color:#fb923c;flex-shrink:0;}
+/* CHARTS */
+.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;}
+.chart-card{
+  background:var(--card-bg);border-radius:10px;
+  padding:20px;box-shadow:var(--shadow);
+}
+.chart-card h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:700;color:var(--text);
+  text-transform:uppercase;letter-spacing:.3px;
+  margin-bottom:14px;border-bottom:2px solid var(--border);
+  padding-bottom:8px;
+}
+.chart-card h4 span{
+  font-family:'Barlow',sans-serif;
+  font-size:11px;color:var(--text-muted);
+  font-weight:400;text-transform:none;
+  margin-left:6px;letter-spacing:0;
+}
+/* TABLES */
+.table-card{
+  background:var(--card-bg);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;
+  margin-bottom:20px;
+}
+.table-toolbar{
+  display:flex;gap:10px;padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  flex-wrap:wrap;align-items:center;
+  background:#fafafa;
+}
+.table-toolbar input{
+  padding:7px 12px;border:1px solid var(--border);
+  border-radius:6px;font-size:13px;font-family:'Barlow',sans-serif;
+  outline:none;flex:1;min-width:160px;
+}
+.table-toolbar select{
+  padding:7px 12px;border:1px solid var(--border);
+  border-radius:6px;font-size:13px;font-family:'Barlow',sans-serif;
+  outline:none;background:#fff;cursor:pointer;
+}
+.table-counter{
+  font-size:12px;color:var(--text-muted);
+  font-weight:600;margin-left:auto;white-space:nowrap;
+}
+.table-scroll{max-height:460px;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{
+  background:#f8fafc;font-weight:700;
+  padding:10px 12px;text-align:left;
+  border-bottom:2px solid var(--border);
+  position:sticky;top:0;z-index:2;
+  white-space:nowrap;color:var(--text);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;text-transform:uppercase;letter-spacing:.3px;
+  cursor:pointer;user-select:none;
+}
+thead th:hover{background:#f1f5f9;}
+tbody tr{border-bottom:1px solid #f1f5f9;transition:background .15s;}
+tbody tr:hover{background:#f8fafc;}
+tbody tr.uao-row{background:#fefce8;}
+tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
+/* BADGES */
+.badge{
+  display:inline-block;padding:2px 8px;
+  border-radius:20px;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;
+}
+.b-virt{background:#dbeafe;color:#1d4ed8;}
+.b-hib{background:#fce7f3;color:#9d174d;}
+.b-pres{background:#f1f5f9;color:#475569;}
+.b-priv{background:#fef3c7;color:#92400e;}
+.b-ofic{background:#dcfce7;color:#15803d;}
+.b-uao{background:#fed7aa;color:#9a3412;}
+.b-acred{background:#ede9fe;color:#6d28d9;}
+.b-region{background:#fce7f3;color:#9d174d;}
+.b-nac{background:#dbeafe;color:#1d4ed8;}
+/* PRICE SECTION */
+.price-rec-header{
+  background:linear-gradient(135deg,#1a1a2e 0%,#8C0F13 100%);
+  border-radius:12px;padding:20px 24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-bottom:20px;
+}
+.price-rec-card{text-align:center;color:#fff;}
+.price-rec-card .label{
+  font-size:10px;text-transform:uppercase;letter-spacing:1px;
+  opacity:.7;margin-bottom:4px;font-weight:600;
+}
+.price-rec-card .price{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;line-height:1;
+}
+.price-rec-card .desc{font-size:11px;opacity:.7;margin-top:3px;}
+/* CHIPS */
+.chip{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:600;margin:2px;
+}
+.chip.blue{background:var(--blue-light);color:var(--blue);}
+.chip.green{background:var(--green-light);color:var(--green);}
+.chip.red{background:var(--red-light);color:var(--red);}
+.chip.orange{background:var(--gold-light);color:var(--gold);}
+.chip.purple{background:#ede9fe;color:var(--purple);}
+.chip.gray{background:#f1f5f9;color:#475569;}
+/* ROADMAP */
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+.roadmap-card{
+  background:var(--card-bg);border-radius:10px;
+  padding:20px;box-shadow:var(--shadow);
+  border-top:4px solid var(--primary);
+}
+.roadmap-card:nth-child(2){border-top-color:var(--blue);}
+.roadmap-card:nth-child(3){border-top-color:var(--green);}
+.roadmap-card h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:800;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.roadmap-card ul{list-style:none;padding:0;}
+.roadmap-card ul li{
+  font-size:12px;padding:5px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:6px;
+  line-height:1.4;
+}
+.roadmap-card ul li::before{
+  content:"◆";font-size:8px;
+  flex-shrink:0;margin-top:3px;
+}
+.roadmap-card:nth-child(1) ul li::before{color:var(--primary);}
+.roadmap-card:nth-child(2) ul li::before{color:var(--blue);}
+.roadmap-card:nth-child(3) ul li::before{color:var(--green);}
+/* RISK TABLE */
+.risk-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:14px;}
+.risk-table th{
+  background:var(--primary);color:#fff;
+  padding:9px 14px;text-align:left;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;text-transform:uppercase;letter-spacing:.3px;
+}
+.risk-table td{padding:9px 14px;border-bottom:1px solid var(--border);}
+.risk-table tr:hover{background:#fef2f2;}
+.risk-tag{
+  display:inline-block;padding:2px 8px;border-radius:12px;
+  font-size:10px;font-weight:700;
+}
+.risk-alto{background:#fee2e2;color:#991b1b;}
+.risk-medio{background:#fef3c7;color:#92400e;}
+.risk-bajo{background:#dcfce7;color:#15803d;}
+/* SOURCES */
+.sources-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.source-card{
+  background:var(--card-bg);border-radius:8px;
+  padding:16px;box-shadow:var(--shadow);
+}
+.source-card h5{
+  font-size:12px;font-weight:700;margin-bottom:8px;
+  color:var(--primary);text-transform:uppercase;letter-spacing:.3px;
+}
+.source-card p,.source-card li{font-size:11px;color:var(--text-muted);line-height:1.5;}
+.source-card ul{padding-left:14px;}
+/* DEMAND TABLE */
+.trend-up{color:var(--green);font-weight:700;}
+.trend-dn{color:var(--red);font-weight:700;}
+/* PRINT */
+@media print{
+  #sidebar,#topbar,#btn-pdf{display:none!important;}
+  #main{margin-left:0!important;padding-top:0!important;width:100%!important;}
+  .section{padding:16px 20px!important;break-inside:avoid;}
+  .chart-grid-2,.chart-grid-3{display:block!important;}
+  .chart-card{margin-bottom:16px!important;break-inside:avoid;}
+  body{background:#fff!important;}
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+  .hero{background-color:#8C0F13!important;}
+  .rec-box{background-color:#1a1a2e!important;}
+  .price-rec-header{background-color:#1a1a2e!important;}
+  #main,.section,.chart-card{overflow:visible!important;}
+  [id^="ch_"]{width:100%!important;min-width:0!important;}
+  table{table-layout:fixed!important;word-break:break-word!important;}
+  .table-scroll{max-height:none!important;overflow:visible!important;}
+}
+/* UTIL */
+.mt12{margin-top:12px;}.mt20{margin-top:20px;}
+.flex-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;}
+.band-label{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 14px;border-radius:6px;margin-bottom:8px;
+  font-size:12px;font-weight:600;
+}
+.band-econ{background:#dcfce7;color:#166534;}
+.band-bajo{background:#d1fae5;color:#065f46;}
+.band-comp{background:#dbeafe;color:#1e40af;}
+.band-alto{background:#fef3c7;color:#92400e;}
+.band-prem{background:#fee2e2;color:#991b1b;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <h1>MBA Benchmark<br>Suroccidente</h1>
+    <span class="badge-modal">📊 Dashboard 2026</span>
+    <div style="margin-top:8px;font-size:11px;color:#9ca3af;line-height:1.4;">
+      Universidad Autónoma<br>de Occidente
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Secciones</div>
+    <a class="nav-item active" href="#hero" onclick="nav(this)"><span class="ico">🏠</span>Resumen Ejecutivo</a>
+    <a class="nav-item" href="#nacional" onclick="nav(this)"><span class="ico">🗺️</span>Mercado Nacional</a>
+    <a class="nav-item" href="#base" onclick="nav(this)"><span class="ico">📋</span>Base Completa</a>
+    <a class="nav-item" href="#digital" onclick="nav(this)"><span class="ico">💻</span>Benchmark Digital</a>
+    <a class="nav-item" href="#regional" onclick="nav(this)"><span class="ico">📍</span>Análisis Regional</a>
+    <a class="nav-item" href="#precios" onclick="nav(this)"><span class="ico">💰</span>Benchmark Precios</a>
+    <a class="nav-item" href="#conclusiones" onclick="nav(this)"><span class="ico">🎯</span>Conclusiones</a>
+    <!-- <a class="nav-item" href="#fuentes" onclick="nav(this)"><span class="ico">📚</span>Fuentes</a> -->
+  </div>
+  <div class="sidebar-footer">
+    <strong style="color:#9ca3af;">Fuente:</strong> SNIES · MEN Colombia<br>
+    n = 100 programas analizados<br>
+    Actualización: mayo 2026
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-title">Benchmark MBA · UAO 2026</div>
+  <button id="btn-pdf" onclick="exportPDF()">⬇ Descargar PDF Ejecutivo</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- A. HERO / RESUMEN EJECUTIVO -->
+<section class="hero" id="hero">
+  <div class="hero-header">
+    <div>
+      <div class="hero-title">Maestría en Administración<br>de Empresas – MBA</div>
+      <div class="hero-subtitle">Universidad Autónoma de Occidente · Santiago de Cali · Modalidad Híbrida · 2026</div>
+    </div>
+
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card blue">
+      <div class="val">100</div>
+      <div class="lbl">Programas MBA analizados en Colombia</div>
+      <div class="trend up">↑ 38% crecimiento 5 años</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="val">22</div>
+      <div class="lbl">Programas digitales (Virtual + Híbrida)</div>
+      <div class="trend up">↑ 22.8% del mercado</div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="val">18</div>
+      <div class="lbl">Competidores en región Suroccidente</div>
+      <div class="trend warn">⚠ 18 de 19 son presenciales</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="val" id="kpi-median-price">—</div>
+      <div class="lbl">Mediana precio digital privado / sem.</div>
+      <div class="trend up">UAO: $13.4M → rango Premium (P75–P80)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="val">1</div>
+      <div class="lbl">Competidor híbrido en la región</div>
+      <div class="trend up">🚀 Monopolio digital efectivo</div>
+    </div>
+  </div>
+
+  <!-- LECTURAS RÁPIDAS -->
+  <!--<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
+    <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 20px;border-left:4px solid #fb923c;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;color:#fb923c;">
+        📋 Para el Comité Académico
+      </div>
+      <ul style="list-style:none;padding:0;font-size:12px;opacity:.9;line-height:1.7;">
+        <li>• Colombia tiene 101 programas MBA/Maestría en Adm. registrados en SNIES.</li>
+        <li>• Solo el 22.8% tiene modalidad digital (V+H). La región Suroccidente tiene apenas 1 programa híbrido.</li>
+        <li>• El MBA UAO (42 créditos, 3 semestres, híbrido) compite directamente con <strong>Javeriana Cali, ICESI y EAFIT Pereira</strong>.</li>
+        <li>• Diferenciación curricular recomendada: eje de transformación digital + industria 4.0 + liderazgo consciente.</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 20px;border-left:4px solid #4ade80;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;color:#4ade80;">
+        💰 Para el Comité Financiero
+      </div>
+      <ul style="list-style:none;padding:0;font-size:12px;opacity:.9;line-height:1.7;">
+        <li>• Precio $13.364.000/sem posiciona al MBA UAO en el <strong>segmento Alto (P60–P75)</strong> del mercado digital privado.</li>
+        <li>• Precio estratégico de mercado: $8.855.000–$10.732.000/sem (zona P40–P60).</li>
+        <li>• La mediana del mercado digital privado es <strong>$10.645.000/sem</strong>.</li>
+        <li>• El precio UAO está 25.6% por encima de la mediana. Se justifica con acreditación y modalidad diferenciada.</li>
+      </ul>
+    </div>
+  </div>-->
+</section>
+
+<!-- C. BASE COMPLETA -->
+<section class="section" id="base">
+  <div class="section-title">A. Base Completa de Programas</div>
+  <div class="section-sub">100 programas · Fuente: SNIES · Última actualización: mayo 2026</div>
+
+  <div class="table-card">
+    <div class="table-toolbar">
+      <input type="text" id="search-base" placeholder="🔍 Buscar programa, universidad, ciudad…" oninput="filterBase()">
+      <select id="fil-modal" onchange="filterBase()">
+        <option value="">Modalidad: Todas</option>
+        <option value="VIRTUAL">Virtual</option>
+        <option value="HIBRIDA">Híbrida</option>
+        <option value="PRESENCIAL">Presencial</option>
+      </select>
+      <select id="fil-sector" onchange="filterBase()">
+        <option value="">Sector: Todos</option>
+        <option value="PRIVADO">Privado</option>
+        <option value="OFICIAL">Oficial</option>
+      </select>
+      <select id="fil-dpto" onchange="filterBase()">
+        <option value="">Departamento: Todos</option>
+      </select>
+      <span class="table-counter" id="cnt-base"></span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Programa</th>
+            <th>Universidad</th>
+            <th>Ciudad</th>
+            <th>Depto.</th>
+            <th>Modalidad</th>
+            <th onclick="sortBase('sems')" style="cursor:pointer;">Períodos <span id="si-sems">↕</span></th>
+            <th>Periodicidad</th>
+            <th onclick="sortBase('cred')" style="cursor:pointer;">Créd. <span id="si-cred">↕</span></th>
+            <th onclick="sortBase('precio')" style="cursor:pointer;">Precio/Per. <span id="si-precio">↕</span></th>
+            <th>Sector</th>
+            <th>SNIES</th>
+            <th>Fecha SNIES</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-base"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- B. ANÁLISIS NACIONAL -->
+<section class="section" id="nacional">
+  <div class="section-title">B. Análisis Nacional del Mercado MBA</div>
+  <div class="section-sub">100 programas activos · SNIES Colombia · Todas las modalidades y sectores</div>
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">100</div>
+      <div class="lbl">Total programas MBA Colombia</div>
+      <div class="trend up">↑ Mercado en expansión</div>
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">78%</div>
+      <div class="lbl">Concentración Presencial</div>
+      <div class="trend warn">78 de 100 programas</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val">22%</div>
+      <div class="lbl">Programas Digitales (V+H)</div>
+      <div class="trend up">↑ Tendencia creciente</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">21</div>
+      <div class="lbl">Departamentos con oferta</div>
+      <div class="trend warn">Bogotá: 28 programas (28%)</div>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <h4>Distribución por Modalidad Nacional <span>n=100</span></h4>
+      <div id="ch_01" style="height:300px;"></div>
+    </div>
+    <div class="chart-card">
+      <h4>Top Departamentos con Oferta MBA <span>programas por depto.</span></h4>
+      <div id="ch_02" style="height:300px;"></div>
+    </div>
+  </div>
+
+<!--  <div class="chart-card">
+    <h4>Categorías de Naming — Familias de Programas <span>clasificación por denominación</span></h4>
+    <div id="ch_03" style="height:260px;"></div>
+  </div>
+-->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;">
+    <div class="insight blue">
+      <div class="ico">📍</div>
+      <div class="content">
+        <h4>Alta concentración geográfica en Bogotá</h4>
+        <p>Bogotá D.C. concentra el 28% de toda la oferta nacional (28 programas), seguida de Antioquia con el 15.8% (16 programas). El Suroccidente y el eje cafetero (Valle, Cauca, Nariño, Risaralda, Quindío, Caldas) representa el 18% del mercado nacional con 19 programas, todos presenciales.</p>
+      </div>
+    </div>
+    <div class="insight green">
+      <div class="ico">📈</div>
+      <div class="content">
+        <h4>Aceleración de registros SNIES post-2020</h4>
+        <p>Más del 60% de los programas digitales fueron registrados después de 2020, evidenciando un punto de inflexión claro post-pandemia. El mercado híbrido es incipiente: solo 2 programas en todo el país tienen esta modalidad, lo que representa una ventana de oportunidad estratégica para UAO.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- D. BENCHMARK DIGITAL -->
+<section class="section" id="digital">
+  <div class="section-title">C. Benchmark Digital — Virtual + Híbrida</div>
+  <div class="section-sub">23 programas digitales (20V + 3H) · Colombia · Análisis de digitalización MBA</div>
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">22</div>
+      <div class="lbl">Programas Digitales Totales</div>
+      <div class="trend up">V + H Colombia</div>
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">20</div>
+      <div class="lbl">Programas Virtuales</div>
+      <div class="trend up">87% de la oferta digital</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">2</div>
+      <div class="lbl">Programas Híbridos</div>
+      <div class="trend warn">Solo 2 en todo Colombia</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val" id="kpi-dig-median">—</div>
+      <div class="lbl">Mediana precio digital privado</div>
+      <div class="trend up">Base de comparación UAO</div>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <h4>Programas Digitales por Modalidad <span>todos los sectores</span></h4>
+      <div id="ch_04" style="height:280px;"></div>
+    </div>
+    <div class="chart-card">
+      <h4>Programas Digitales por Departamento <span>distribución geográfica</span></h4>
+      <div id="ch_05" style="height:280px;"></div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h4>Distribución por Sector — Programas Digitales <span>privado vs oficial</span></h4>
+    <div id="ch_06" style="height:260px;"></div>
+  </div>
+
+<!--  <div class="insight orange mt12">
+    <div class="ico">🚀</div>
+    <div class="content">
+      <h4>Ventana de oportunidad: hibridez como diferenciador estructural</h4>
+      <p>Con solo 3 programas híbridos en todo el país, el MBA UAO ingresa a un segmento casi virgen. La modalidad híbrida combina la riqueza del contacto presencial con la flexibilidad digital, siendo especialmente atractiva para ejecutivos en activo. Este posicionamiento no puede ser fácilmente replicado por competidores puramente virtuales ni por los presenciales tradicionales en el corto plazo.</p>
+    </div>
+  </div>-->
+  <!-- Tabla programas digitales -->
+  <div class="table-card mt20">
+    <div class="table-toolbar">
+      <span style="font-size:13px;font-weight:700;color:var(--primary);">Programas Virtuales + Híbridos — Todos los sectores</span>
+      <span class="table-counter" id="cnt-dig">23 programas</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Programa</th>
+            <th>Universidad</th>
+            <th>Ciudad</th>
+            <th>Modalidad</th>
+            <th>Créditos</th>
+            <th>Semestres</th>
+            <th>Precio/Per.</th>
+            <th>Sector</th>
+            <th>SNIES</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-dig"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- E. ANÁLISIS REGIONAL -->
+<section class="section" id="regional">
+  <div class="section-title">D. Análisis Regional — Suroccidente + Eje Cafetero</div>
+  <div class="section-sub">Valle del Cauca · Cauca · Nariño · Risaralda · Quindío · Caldas</div>
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">18</div>
+      <div class="lbl">Programas en la Región</div>
+      <div class="trend warn">18.8% del mercado nacional</div>
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">Valle</div>
+      <div class="lbl">Depto. con mayor concentración</div>
+      <div class="trend warn">8 programas · Cali: 6</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">1</div>
+      <div class="lbl">Programa Híbrido en la Región</div>
+      <div class="trend up">✅ Monopolio efectivo UAO</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val">0</div>
+      <div class="lbl">Programas virtuales en la Región</div>
+      <div class="trend up">Oportunidad</div>
+    </div>
+  </div>
+
+  <!-- Tabla regional -->
+  <div class="table-card">
+    <div class="table-toolbar">
+      <span style="font-size:13px;font-weight:700;color:var(--primary);">Programas MBA — Región Suroccidente + Eje Cafetero</span>
+      <span class="table-counter" id="cnt-reg">18 programas</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Programa</th>
+            <th>Universidad</th>
+            <th>Ciudad</th>
+            <th>Depto.</th>
+            <th>Modalidad</th>
+            <th>Créditos</th>
+            <th>Semestres</th>
+            <th>Precio/Per.</th>
+            <th>Sector</th>
+            <th>Acreditación</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-reg"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <h4>Programas MBA por Ciudad — Región Suroccidente</h4>
+      <div id="ch_07" style="height:300px;"></div>
+    </div>
+    <div class="chart-card">
+      <h4>Distribución por Modalidad — Región</h4>
+      <div id="ch_08" style="height:300px;"></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;">
+    <div class="insight red">
+      <div class="ico">⚔️</div>
+      <div class="content">
+        <h4>Competidor regional líder: Javeriana Cali</h4>
+        <p>59 inscritos en 2024, acreditación de alta calidad, precio $19.35M/sem. Opera en modalidad presencial, lo que confirma la brecha que UAO puede ocupar con su MBA Híbrido.</p>
+      </div>
+    </div>
+    <div class="insight green">
+      <div class="ico">🏆</div>
+      <div class="content">
+        <h4>Competidor regional líder: ICESI</h4>
+        <p>ICESI registra la mayor demanda histórica en Cali con 80 inscritos en 2022 (pico), y 59 en el 2023 y 2024.</p>
+      </div>
+    </div>
+    <div class="insight orange">
+      <div class="ico">🗺️</div>
+      <div class="content">
+        <h4>Ciudades intermedias sin cobertura digital</h4>
+        <p>Pasto, Popayán y las ciudades intermedias del Eje Cafetero no tienen acceso a un MBA digital de calidad. El formato híbrido UAO podría capturar ejecutivos de estas ciudades sin necesidad de desplazamiento semanal a Cali.</p>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Tabla de demanda -->
+  <div class="chart-card mt20">
+    <h4>Demanda Histórica 2020–2024 — Programas Regionales y Digitales Nacionales<span>Datos SNIES disponibles</span></h4>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Programa</th>
+            <th>Universidad</th>
+            <th>Modalidad</th>
+            <th>Ámbito</th>
+            <th>2020</th>
+            <th>2021</th>
+            <th>2022</th>
+            <th>2023</th>
+            <th>2024</th>
+            <th>Tendencia</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-dem"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- F. BENCHMARK DE PRECIOS -->
+<section class="section" id="precios">
+  <div class="section-title">E. Benchmark de Precios — Programas Digitales Nacionales - Programas Presenciales Regionales</div>
+  <!-- <div class="section-sub">17 programas con precio disponible · Sector privado · Virtual + Híbrida · Excluye UAO Híbrida (Nuevo)</div>-->
+
+
+
+    <div class="insight blue">
+      <div class="ico">🔍</div>
+      <div class="content">
+        <h4>Análisis Nivel Nacional</h4>
+        <p>Se analizaron los precios de los 20 programas digitales a nivel nacional que cuentan con información (No hay precios de la Universidad Central y la F.U Juan N. Corpas).</p>
+      </div>
+    </div>
+
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">$8.3M – $9.0M</div>
+      <div class="lbl">Bajo-Competitivo</div>
+      <div class="trend up">P25–P40 · $8.359k–$9.094k</div>
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">$9.0M – $10.69M</div>
+      <div class="lbl">Competitivo</div>
+      <div class="trend up">P40–P60 · $9.094k–$10.690k</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">$10.69M – $11.23M</div>
+      <div class="lbl">Alto</div>
+      <div class="trend warn">P60–P75 · $10.690k–$11.230k</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val" id="kpi-dig-median">≥ $11.23M</div>
+      <div class="lbl">Premium</div>
+      <div class="trend up">≥ P75 · ≥$11.230k</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">$7.21M</div>
+      <div class="lbl">Precio mínimo (ECCI Virtual)</div>     
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">$31.62M</div>
+      <div class="lbl">Precio máximo (Los Andes Virtual)</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">$10.56M</div>
+      <div class="lbl">Mediana (P50)</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val" id="kpi-dig-median">$11.55M</div>
+      <div class="lbl">Promedio — todos digitales</div>
+    </div>
+  </div>
+
+    <div class="insight red">
+      <div class="ico">🔍</div>
+      <div class="content">
+        <h4>Análisis Nivel Regional</h4>
+        <p>Se analizaron los precios de los 18 programas a nivel regional (Suroccidente y Eje Cafetero). Todos son Presenciales.</p>
+      </div>
+    </div>
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">$11.39M – $12.37M</div>
+      <div class="lbl">Bajo-Competitivo</div>
+      <div class="trend up">P25–P40</div>
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">$12.37M – $13.86M</div>
+      <div class="lbl">Competitivo</div>
+      <div class="trend up">P40–P60</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">$13.86M – $16.45M</div>
+      <div class="lbl">Alto</div>
+      <div class="trend warn">P60–P75</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val" id="kpi-dig-median">≥ $16.45M</div>
+      <div class="lbl">Premium</div>
+      <div class="trend up">≥ P75 </div>
+    </div>
+  </div>
+
+  <div class="kpi-grid-4">
+    <div class="kpi-card2">
+      <div class="val">$7.91M</div>
+      <div class="lbl">Precio mínimo (Universidad Mariana-Pasto)</div>     
+    </div>
+    <div class="kpi-card2 blue">
+      <div class="val">$19.99M</div>
+      <div class="lbl">Precio máximo (ICESI)</div>
+    </div>
+    <div class="kpi-card2 orange">
+      <div class="val">$13.16M</div>
+      <div class="lbl">Mediana (P50)</div>
+    </div>
+    <div class="kpi-card2 green">
+      <div class="val" id="kpi-dig-median">$13.70M</div>
+      <div class="lbl">Promedio — todos presenciales</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h4>Ranking de Precios — Programas Regionales <span>con referencia UAO y percentiles</span></h4>
+    <div id="ch_09" style="height:500px;"></div>
+  </div>
+
+  <div class="chart-card mt20">
+    <h4>Demanda Regional 2020–2024 <span>programas regionales · valores = 0 donde no hay dato</span></h4>
+    <div id="ch_10" style="height:380px;"></div>
+  </div>
+   <div class="card" style="background:var(--card-bg);border-radius:10px;padding:20px;box-shadow:var(--shadow);margin-top:20px;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:14px;">Lanzamiento · Universidad Autónoma de Occidente</div>
+    <table style="width:100%;font-size:13px;border-collapse:collapse;">
+      <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);width:220px;">Nombre del Programa</td><td style="padding:8px 12px;">Maestría en Administración de Empresas → Maestría en Administración de Empresas - MBA</td></tr>
+      <tr style="border-bottom:1px solid var(--border);background:#fafafa;"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Institución</td><td style="padding:8px 12px;">Universidad Autónoma de Occidente (UAO)</td></tr>
+      <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Ciudad / Departamento</td><td style="padding:8px 12px;">Santiago de Cali · Valle del Cauca</td></tr>
+      <tr style="border-bottom:1px solid var(--border);background:#fafafa;"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Modalidad</td><td style="padding:8px 12px;"><span class="badge b-pres">Presencial</span> → <span class="badge b-hib">Híbrido</span></td></tr>
+      <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Semestres</td><td style="padding:8px 12px;">4 → 3 semestres</td></tr>
+      <tr style="border-bottom:1px solid var(--border);background:#fafafa;"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Créditos</td><td style="padding:8px 12px;">48 → 42 créditos</td></tr>
+      <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Precio por Semestre</td><td style="padding:8px 12px;"><strong>$13.364.000</strong></td></tr>
+      <tr style="border-bottom:1px solid var(--border);background:#fafafa;"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Sector</td><td style="padding:8px 12px;"><span class="badge b-priv">Privada</span></td></tr>
+      <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Reconocimiento MEN</td><td style="padding:8px 12px;">Registro Calificado</td></tr>
+      <tr style="border-bottom:1px solid var(--border);background:#fafafa;"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">SNIES</td><td style="padding:8px 12px;">90793 → 118582</td></tr>
+      <!-- <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);">Precio Total Estimado</td><td style="padding:8px 12px;">~$53.46M → $40.1M COP</td></tr>-->
+      <tr><td style="padding:8px 12px;font-weight:700;color:var(--text-muted);background:#fafafa;">Orientación</td><td style="padding:8px 12px;background:#fafafa;">Gerencial / Ejecutivo / Regional</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- G. CONCLUSIONES -->
+<section class="section" id="conclusiones">
+  <div class="section-title">F. Conclusiones</div>
+  <div class="section-sub">Síntesis estratégica · Decisión de lanzamiento · Riesgos y hoja de ruta</div>
+
+  <div style="margin-bottom:20px;">
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:14px;">
+      Hallazgos Estratégicos
+    </h3>
+
+    <div class="insight blue">
+      <div class="ico">🔍</div>
+      <div class="content">
+        <h4>Hallazgo 1 — Mercado en expansión pero altamente presencial</h4>
+        <p>Colombia tiene 100 programas MBA/Maestría en Administración, de los cuales el 78% son presenciales. El mercado digital representa solo el 22%, con apenas 2 programas híbridos en todo el país. Esta brecha estructural es la principal oportunidad para el MBA UAO (Lanzamiento).</p>
+      </div>
+    </div>
+    <div class="insight green">
+      <div class="ico">🏆</div>
+      <div class="content">
+        <h4>Hallazgo 2 — Monopolio híbrido efectivo en el Suroccidente</h4>
+        <p>El Suroccidente y Eje cafetero colombiano (Valle, Cauca, Nariño, Risaralda, Quindío, Caldas) tiene 18 programas MBA/maestría en administración. La UAO sería el único programa híbrido en toda la región.</p>
+      </div>
+    </div>
+    <div class="insight orange">
+      <div class="ico">💰</div>
+      <div class="content">
+        <h4>Hallazgo 7 — Precio Estratégico: $12.37M – $13.86M</h4>
+        <p>El análisis de percentiles sobre los 18 programas regionales sitúa el precio óptimo P40-P60: $12.37M – $13.86M. Se recomienda continuar con el precio que tenía el programa que se renovó ($13.364.000), el cual estaría dentro de este rango.</p>
+      </div>
+    </div>
+    <div class="insight red">
+      <div class="ico">⚔️</div>
+      <div class="content">
+        <h4>Hallazgo 4 — En la Ciudad, la Javeriana, San buenaventura, e ICESI son los competidores privados con reputación más fuerte</h4>
+        <p>La PUJ y la ICESI tienen los programas con mayor demanda documentada en la región (59 inscritos en 2024 por cada uno), acreditación de alta calidad y precio de $19.35M/sem y $19.99M/sem. ICESI registra la mayor demanda histórica en Cali con 80 inscritos en 2022 (pico). Su posicionamiento presencial deja espacio para UAO en el segmento de ejecutivos que buscan flexibilidad virtual con calidad institucional.</p>
+      </div>
+    </div>
+
+    <div class="insight blue">
+      <div class="ico">🎓</div>
+      <div class="content">
+        <h4>Hallazgo 5 — Demanda UAO</h4>
+        <p>La UAO ya tiene dato histórico (presencial: 68 inscritos en 2020, 13 en 2021, 32 en 2022, 27 en 2023 y 23 en 2024), señalando la necesidad de relanzamiento con nueva propuesta diferenciada.</p>
+      </div>
+    </div>    
+
+    <div class="insight green">
+      <div class="ico">🌐</div>
+      <div class="content">
+        <h4>Hallazgo 5 — El mercado virtual nacional está fragmentado y polarizado</h4>
+        <p>Los programas virtuales privados oscilan entre $7.21M (ECCI) y $31.6M (Uniandes). La concentración en Bogotá (28 programas) crea oportunidad para UAO de capturar aspirantes de otras regiones con un programa digital de calidad regional. Programas económicos (&lt;P25) no compiten en el mismo segmento que UAO.</p>
+      </div>
+    </div>
+    <div class="insight orange">
+      <div class="ico">📅</div>
+      <div class="content">
+        <h4>Hallazgo 6 — Aceleración de registros SNIES post-2020</h4>
+        <p>Más del 60% de los programas digitales fueron registrados en SNIES después de 2020. Esto indica que el mercado MBA digital aún está en fase de formación, con primeros entrantes con ventaja de posicionamiento. </p>
+      </div>
+    </div>
+
+
+    
+  </div>
+
+  <!-- REC BOX -->
+  <!--  <div class="rec-box">
+    <h3>✅ Decisión: LANZAR — MBA Híbrido UAO 2026</h3>
+    <p>El análisis de mercado confirma viabilidad estratégica con posicionamiento diferenciado. Las condiciones son favorables: monopolio modal regional, demanda institucional activa, precio competitivo en segmento Alto justificado por propuesta de valor, y ventana temporal de 2-3 años antes de que competidores repliquen la modalidad híbrida.</p>
+    <ul>
+      <li>Posicionarse como el único MBA híbrido premium del Suroccidente colombiano.</li>
+      <li>Anclar la propuesta de valor en: flexibilidad ejecutiva + red empresarial Cali-Valle + certificaciones digitales.</li>
+      <li>Desarrollar alianzas con gremios (Cámara de Comercio Cali, ANDI Valle, Fenalco) para credibilidad corporativa.</li>
+      <li>Meta semestral inicial: 25–30 inscritos. Escalabilidad a 40+ con estrategia de atracción digital activa.</li>
+      <li>Revisar precio en 12 meses: si demanda supera 35 inscritos, explorar ajuste hacia P75 ($12.9M–$14.3M).</li>
+    </ul>
+  </div>-->
+
+  <!-- RIESGOS -->
+  <!--  <div style="background:var(--card-bg);border-radius:10px;padding:20px;box-shadow:var(--shadow);margin-top:20px;">
+    <h4 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:14px;">
+      Riesgos Críticos y Planes de Mitigación
+    </h4>
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th>Riesgo</th>
+          <th>Nivel</th>
+          <th>Impacto</th>
+          <th>Mitigación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Javeriana Cali o ICESI lanzan modalidad híbrida</td>
+          <td><span class="risk-tag risk-alto">ALTO</span></td>
+          <td>Pérdida de diferenciador modal</td>
+          <td>Acelerar registro y marketing. Construir marca antes de que lleguen competidores.</td>
+        </tr>
+        <tr>
+          <td>Demanda insuficiente primer cohorte (&lt;15 aspirantes)</td>
+          <td><span class="risk-tag risk-alto">ALTO</span></td>
+          <td>Inviabilidad financiera del cohorte</td>
+          <td>Pacto con empresas aliadas para garantizar mínimo de 15 inscritos corporativos.</td>
+        </tr>
+        <tr>
+          <td>Percepción de precio alto frente a virtuales económicos</td>
+          <td><span class="risk-tag risk-medio">MEDIO</span></td>
+          <td>Pérdida de aspirantes sensibles al precio</td>
+          <td>Comunicar diferencial híbrido. Ofrecer esquemas de financiación con Icetex y bancos aliados.</td>
+        </tr>
+        <tr>
+          <td>Baja diferenciación curricular vs. oferta existente</td>
+          <td><span class="risk-tag risk-medio">MEDIO</span></td>
+          <td>Débil propuesta de valor</td>
+          <td>Incorporar ejes de transformación digital, liderazgo e innovación empresarial como distintivos.</td>
+        </tr>
+        <tr>
+          <td>Reducción de demanda MBA por ciclo económico</td>
+          <td><span class="risk-tag risk-bajo">BAJO</span></td>
+          <td>Menor volumen de aspirantes</td>
+          <td>Diversificar perfil de aspirantes: jóvenes profesionales + ejecutivos medios + propietarios PyME.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>-->
+
+  <!-- ROADMAP -->
+  <!--  <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-top:24px;margin-bottom:4px;">
+    Roadmap de Lanzamiento — 12 Meses
+  </h3>
+  <div class="roadmap-grid">
+    <div class="roadmap-card">
+      <h4>🚀 Fase 1: 0–3 meses<br>Preparación</h4>
+      <ul>
+        <li>Finalizar diseño curricular con diferenciadores (Digital Transformation, ESG, Liderazgo)</li>
+        <li>Registrar programa en SNIES e iniciar trámites de acreditación</li>
+        <li>Estructurar planta docente: 60% investigadores + 40% prácticos con red empresarial</li>
+        <li>Definir tecnología de plataforma híbrida (LMS + salas VR opcional)</li>
+        <li>Cerrar alianzas con al menos 5 empresas ancla para inscritos corporativos</li>
+      </ul>
+    </div>
+    <div class="roadmap-card">
+      <h4>📣 Fase 2: 3–6 meses<br>Lanzamiento</h4>
+      <ul>
+        <li>Campaña digital: LinkedIn + Google Ads + eventos presenciales en Cali, Pereira, Pasto</li>
+        <li>Webinars con empresas: "El ejecutivo del futuro en el Suroccidente"</li>
+        <li>Activar red de alumni UAO para testimonios y referidos</li>
+        <li>Publicar ranking propio: "MBA más flexible de la región"</li>
+        <li>Primer cohorte objetivo: 25–30 inscritos con cierre mayo–junio</li>
+      </ul>
+    </div>
+    <div class="roadmap-card">
+      <h4>📈 Fase 3: 6–12 meses<br>Consolidación</h4>
+      <ul>
+        <li>Evaluar NPS primer cohorte y ajustar modelo pedagógico</li>
+        <li>Presentar resultados de empleabilidad y networking a medios</li>
+        <li>Explorar expansión a Pereira o Manizales en formato hub satélite</li>
+        <li>Iniciar proceso de acreditación internacional (AACSB o AMBA)</li>
+        <li>Revisar precio para segundo cohorte según demanda observada</li>
+      </ul>
+    </div>
+  </div>-->
+</section>
+
+<!-- H. FUENTES -->
+<!--<section class="section" id="fuentes">
+  <div class="section-title">H. Fuentes y Supuestos Metodológicos</div>
+  <div class="section-sub">Transparencia analítica y calidad de datos</div>
+
+  <div class="sources-grid">
+    <div class="source-card">
+      <h5>📦 Fuentes de datos</h5>
+      <ul>
+        <li>Sistema Nacional de Información de la Educación Superior (SNIES) — Ministerio de Educación Nacional de Colombia</li>
+        <li>Portales web institucionales de universidades referenciadas</li>
+        <li>Datos de demanda histórica 2020–2024: SNIES (nota: solo 15 de 101 programas tienen datos publicados)</li>
+        <li>Precios semestral: tomados directamente del campo VALOR_SEMESTRE del dataset SNIES</li>
+      </ul>
+    </div>
+    <div class="source-card">
+      <h5>⚙️ Normalización de datos</h5>
+      <ul>
+        <li>Modalidad normalizada: PRESENCIAL / VIRTUAL / HIBRIDA (reemplaza variaciones tipográficas)</li>
+        <li>Sector normalizado: PRIVADO / OFICIAL</li>
+        <li>Precio: 4 registros con "Sin información" excluidos del análisis de precios (representan el 4% del total)</li>
+        <li>Programa UAO marcado con flag uao:true para diferenciación visual en tablas</li>
+      </ul>
+    </div>
+    <div class="source-card">
+      <h5>📐 Supuestos metodológicos</h5>
+      <ul>
+        <li>Percentiles calculados en tiempo real sobre precios digitales PRIVADOS con dato disponible (n=18)</li>
+        <li>Programas UAO: dos registros (presencial SNIES 90793 y nuevo híbrido SNIES 118582). El análisis de precio usa $13.364.000 para ambos</li>
+        <li>Un outlier fue identificado (Unibagué: $96.27M — posible error de captura), excluido del cálculo de percentiles</li>
+        <li>La demanda SNIES corresponde a inscritos en primer período, no a aspirantes ni matriculados totales</li>
+      </ul>
+    </div>
+    <div class="source-card">
+      <h5>⚠️ Advertencias y limitaciones</h5>
+      <ul>
+        <li><strong>Calidad de datos de precio:</strong> Los precios SNIES son de referencia declarativa. Pueden diferir de los valores efectivos por descuentos, becas o ajustes de periodo.</li>
+        <li><strong>Demanda incompleta:</strong> El 85.1% de los programas no tienen datos de demanda en SNIES, limitando el análisis de tendencias.</li>
+        <li><strong>Acreditación:</strong> La columna refleja el estado al momento de la consulta; puede haber cambios recientes no capturados.</li>
+        <li><strong>Precios nominales:</strong> No ajustados por inflación. Para comparación interanual, aplicar deflactor IPC.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:var(--card-bg);border-radius:10px;padding:16px 20px;box-shadow:var(--shadow);margin-top:16px;border-left:4px solid var(--primary);">
+    <h5 style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--primary);text-transform:uppercase;margin-bottom:8px;">
+      ℹ️ Nota sobre exportación PDF
+    </h5>
+    <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+      Este dashboard utiliza <strong>window.print()</strong> con CSS optimizado para producir PDF de alta fidelidad, en lugar de html2pdf.js. La razón técnica: html2pdf.js captura el DOM como imagen canvas (bitmap), generando gráficos pixelados, cortes impredecibles entre páginas y pérdida de colores institucionales. El método window.print() con print-color-adjust: exact produce vectores nítidos, respeta la tipografía y los colores de la paleta institucional sin dependencias adicionales.
+    </p>
+  </div>
+</section>-->
+
+</div><!-- /main -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const NATIONAL_DATA = [{"prog":"MAESTRIA EN ADMINISTRACION","univ":"UNIVERSIDAD NACIONAL DE COLOMBIA - BOGOTÁ","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":10259485.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"OFICIAL","snies":17906,"fecha":"2002-12-05","acred":"Acreditación de alta calidad"},{"prog":"MAESTRIA EN ADMINISTRACION","univ":"UNIVERSIDAD NACIONAL DE COLOMBIA - MANIZALES","ciudad":"Manizales","dpto":"Caldas","precio":12006580.0,"dem2020":8,"dem2021":6,"dem2022":10,"dem2023":20,"dem2024":24,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"OFICIAL","snies":19921,"fecha":"2003-08-25","acred":"Acreditación de alta calidad"},{"prog":"MAESTRIA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD NACIONAL DE COLOMBIA - PALMIRA","ciudad":"Palmira","dpto":"Valle del Cauca","precio":11008240.0,"dem2020":9,"dem2021":21,"dem2022":14,"dem2023":6,"dem2024":9,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"OFICIAL","snies":101987,"fecha":"2012-10-01","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD PEDAGOGICA Y TECNOLOGICA DE COLOMBIA - UPTC","ciudad":"Sogamoso","dpto":"Boyacá","precio":10505430.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"OFICIAL","snies":105707,"fecha":"2023-03-16","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"UNIVERSIDAD TECNOLOGICA DE PEREIRA - UTP","ciudad":"Pereira","dpto":"Risaralda","precio":12256335.0,"dem2020":null,"dem2021":7,"dem2022":0,"dem2023":12,"dem2024":19,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":53,"sector":"OFICIAL","snies":110293,"fecha":"2021-05-18","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION DE EMPRESAS","univ":"UNIVERSIDAD SURCOLOMBIANA","ciudad":"Neiva","dpto":"Huila","precio":13464887.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":47,"sector":"OFICIAL","snies":105610,"fecha":"2023-03-23","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DE LA AMAZONIA","ciudad":"Florencia","dpto":"Caquetá","precio":14007240.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":50,"sector":"OFICIAL","snies":102763,"fecha":"2022-04-20","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCIOS","univ":"UNIVERSIDAD DE LOS LLANOS","ciudad":"Villavicencio","dpto":"Meta","precio":8754525.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":60,"sector":"OFICIAL","snies":104692,"fecha":"2023-12-07","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DE ANTIOQUIA","ciudad":"Medellín","dpto":"Antioquia","precio":12185200.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":51,"sector":"OFICIAL","snies":90717,"fecha":"2017-11-29","acred":"Acreditación de alta calidad"},{"prog":"MAESTRIA EN ADMINISTRACION DE EMPRESAS","univ":"UNIVERSIDAD DEL ATLANTICO","ciudad":"Puerto Colombia","dpto":"Atlántico","precio":10505430.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":0,"dem2024":0,"modal":"HIBRIDA","sems":4,"periodicidad":"SEMESTRAL","cred":46,"sector":"OFICIAL","snies":116405,"fecha":"2023-09-08","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION","univ":"UNIVERSIDAD DEL VALLE","ciudad":"Santiago de Cali","dpto":"Valle del Cauca","precio":10472690.0,"dem2020":43,"dem2021":31,"dem2022":23,"dem2023":9,"dem2024":29,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":39,"sector":"OFICIAL","snies":660,"fecha":"1998-03-21","acred":"Registro calificado"},{"prog":"MAESTRÍA EN GERENCIA DE NEGOCIOS - MBA","univ":"UNIVERSIDAD INDUSTRIAL DE SANTANDER","ciudad":"Bucaramanga","dpto":"Santander","precio":12176955.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":39,"sector":"OFICIAL","snies":90966,"fecha":"2023-12-12","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DEL TOLIMA","ciudad":"Ibagué","dpto":"Tolima","precio":12256335.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":50,"sector":"OFICIAL","snies":103521,"fecha":"2014-07-27","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DEL QUINDIO","ciudad":"Armenia","dpto":"Quindío","precio":14007240.0,"dem2020":22,"dem2021":6,"dem2022":15,"dem2023":6,"dem2024":0,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"OFICIAL","snies":102239,"fecha":"2013-01-29","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD FRANCISCO DE PAULA SANTANDER","ciudad":"Ocaña","dpto":"Norte de Santander","precio":7879073.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":50,"sector":"OFICIAL","snies":105609,"fecha":"2024-05-16","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DE PAMPLONA","ciudad":"Pamplona","dpto":"Norte de Santander","precio":9224300.0,"dem2020":21,"dem2021":31,"dem2022":14,"dem2023":23,"dem2024":8,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"OFICIAL","snies":106497,"fecha":"2017-10-08","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DEL MAGDALENA - UNIMAGDALENA","ciudad":"Santa Marta","dpto":"Magdalena","precio":10400000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":60,"sector":"OFICIAL","snies":106828,"fecha":"2025-12-31","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"UNIVERSIDAD DE SUCRE","ciudad":"Sincelejo","dpto":"Sucre","precio":8976591.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"OFICIAL","snies":108697,"fecha":"2020-01-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACION DE EMPRESAS","univ":"UNIVERSIDAD DE LA GUAJIRA","ciudad":"Riohacha","dpto":"La Guajira","precio":9454887.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"OFICIAL","snies":106149,"fecha":"2017-03-07","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"PONTIFICIA UNIVERSIDAD JAVERIANA - BOGOTÁ","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":31163000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":54,"sector":"PRIVADO","snies":101893,"fecha":"2018-12-11","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"PONTIFICIA UNIVERSIDAD JAVERIANA - BARRANQUILLA","ciudad":"Barranquilla","dpto":"Atlántico","precio":20950000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":50,"sector":"PRIVADO","snies":105155,"fecha":"2015-12-18","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"PONTIFICIA UNIVERSIDAD JAVERIANA - CALI","ciudad":"Santiago de Cali","dpto":"Valle del Cauca","precio":19350000.0,"dem2020":42,"dem2021":46,"dem2022":73,"dem2023":47,"dem2024":59,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":50,"sector":"PRIVADO","snies":53012,"fecha":"2007-08-03","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACION - MBA","univ":"UNIVERSIDAD SANTO TOMAS - BOGOTÁ","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":9688600.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":39,"sector":"PRIVADO","snies":101363,"fecha":"2025-01-15","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN- MBA","univ":"UNIVERSIDAD SANTO TOMAS - VILLAVICENCIO","ciudad":"Villavicencio","dpto":"Meta","precio":9058100.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":108741,"fecha":"2020-01-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD SANTO TOMAS - TUNJA","ciudad":"Tunja","dpto":"Boyacá","precio":7500000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":109020,"fecha":"2019-12-18","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN - MBA","univ":"UNIVERSIDAD SANTO TOMAS - BUCARAMANGA","ciudad":"Bucaramanga","dpto":"Santander","precio":8400000.0,"dem2020":21,"dem2021":12,"dem2022":16,"dem2023":16,"dem2024":16,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":39,"sector":"PRIVADO","snies":91352,"fecha":"2024-05-03","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION DE EMPRESAS","univ":"UNIVERSIDAD EXTERNADO DE COLOMBIA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":22330000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":58,"sector":"PRIVADO","snies":1138,"fecha":"2022-12-16","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN – MBA","univ":"FUNDACION UNIVERSIDAD DE BOGOTA - JORGE TADEO LOZANO","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":8224000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":0,"dem2024":143,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":36,"sector":"PRIVADO","snies":116169,"fecha":"2023-08-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"UNIVERSIDAD CENTRAL","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":null,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":118334,"fecha":"2025-10-10","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD PONTIFICIA BOLIVARIANA - PALMIRA","ciudad":"Palmira","dpto":"Valle del Cauca","precio":12406600.0,"dem2020":35,"dem2021":18,"dem2022":18,"dem2023":24,"dem2024":27,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":118063,"fecha":"2018-08-14","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD PONTIFICIA BOLIVARIANA - BUCARAMANGA","ciudad":"Bucaramanga","dpto":"Santander","precio":15041600.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":106194,"fecha":"2017-03-10","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD PONTIFICIA BOLIVARIANA - ARMENIA","ciudad":"Armenia","dpto":"Quindío","precio":17193800.0,"dem2020":30,"dem2021":19,"dem2022":17,"dem2023":10,"dem2024":11,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":102523,"fecha":"2019-11-07","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD PONTIFICIA BOLIVARIANA - MONTERIA","ciudad":"Montería","dpto":"Córdoba","precio":14984051.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":101928,"fecha":"2019-12-18","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"UNIVERSIDAD PONTIFICIA BOLIVARIANA - MEDELLIN VIRT","ciudad":"Medellín","dpto":"Antioquia","precio":17285600.0,"dem2020":31,"dem2021":27,"dem2022":36,"dem2023":15,"dem2024":12,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":20808,"fecha":"2025-07-31","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"UNIVERSIDAD PONTIFICIA BOLIVARIANA - MEDELLIN PRES","ciudad":"Medellín","dpto":"Antioquia","precio":22902400.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":118063,"fecha":"2018-08-14","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"UNIVERSIDAD EAFIT- BOGOTA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":26427412.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":102035,"fecha":"2019-12-18","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION – MBA –","univ":"UNIVERSIDAD EAFIT- MEDELLIN","ciudad":"Medellín","dpto":"Antioquia","precio":23013502.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":1265,"fecha":"2018-08-06","acred":"Acreditación de alta calidad"},{"prog":"MAESTRIA EN ADMINISTRACIÓN MBA","univ":"UNIVERSIDAD EAFIT- PEREIRA","ciudad":"Pereira","dpto":"Risaralda","precio":17385706.0,"dem2020":39,"dem2021":32,"dem2022":39,"dem2023":40,"dem2024":37,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":102034,"fecha":"2019-12-11","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN -MBA","univ":"UNIVERSIDAD EAFIT- POPAYAN","ciudad":"Popayán","dpto":"Cauca","precio":17190542.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":0,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":117088,"fecha":"2024-07-17","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION DE EMPRESAS","univ":"UNIVERSIDAD DEL NORTE","ciudad":"Barranquilla","dpto":"Atlántico","precio":25324000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":60,"sector":"PRIVADO","snies":1291,"fecha":"2017-03-03","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"COLEGIO MAYOR DE NUESTRA SEÑORA DEL ROSARIO","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":36638291.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":40,"sector":"PRIVADO","snies":105712,"fecha":"2023-03-15","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA - ONE YEAR","univ":"COLEGIO MAYOR DE NUESTRA SEÑORA DEL ROSARIO - ONE YEAR","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":49723000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":2,"periodicidad":"SEMESTRAL","cred":40,"sector":"PRIVADO","snies":105712,"fecha":"2023-03-15","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN  (MBA)","univ":"FUNDACION UNIVERSIDAD DE AMERICA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":7363900.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":51,"sector":"PRIVADO","snies":105224,"fecha":"2023-04-25","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCIOS","univ":"UNIVERSIDAD DE SAN BUENAVENTURA","ciudad":"Santiago de Cali","dpto":"Valle del Cauca","precio":13831050.0,"dem2020":18,"dem2021":10,"dem2022":14,"dem2023":10,"dem2024":9,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":null,"fecha":"N/A","acred":"Registro calificado"},{"prog":"MAESTRÍA EN DIRECCIÓN DE EMPRESAS (MBA)","univ":"UNIVERSIDAD DE SAN BUENAVENTURA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":10622000.0,"dem2020":5,"dem2021":2,"dem2022":0,"dem2023":15,"dem2024":0,"modal":"HIBRIDA","sems":3,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":106633,"fecha":"2025-01-14","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD MARIANA","ciudad":"Pasto","dpto":"Nariño","precio":7913000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":108063,"fecha":"2025-07-23","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN – MBA","univ":"UNIVERSIDAD CATOLICA DE ORIENTE -UCO","ciudad":"Rionegro","dpto":"Antioquia","precio":9452600.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":43,"sector":"PRIVADO","snies":118216,"fecha":"2025-07-15","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION DE NEGOCIOS (MBA)","univ":"UNIVERSIDAD SERGIO ARBOLEDA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":31947150.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":51664,"fecha":"2019-01-30","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCIOS MBA","univ":"UNIVERSIDAD SERGIO ARBOLEDA","ciudad":"Barranquilla","dpto":"Atlántico","precio":25803450.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":103575,"fecha":"2020-11-18","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DE BOYACA UNIBOYACA","ciudad":"Tunja","dpto":"Boyacá","precio":8600000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":40,"sector":"PRIVADO","snies":105563,"fecha":"2024-01-15","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD LA GRAN COLOMBIA","ciudad":"Armenia","dpto":"Quindío","precio":14256000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":12,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":46,"sector":"PRIVADO","snies":116744,"fecha":"2024-04-04","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS - MBA","univ":"UNIVERSIDAD DE LA SALLE","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":8675000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":17,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":116786,"fecha":"2024-03-22","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN-MBA","univ":"UNIVERSIDAD AUTONOMA DEL CARIBE- UNIAUTONOMA","ciudad":"Barranquilla","dpto":"Atlántico","precio":9747987.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":50,"sector":"PRIVADO","snies":109258,"fecha":"2020-06-12","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD LIBRE","ciudad":"Barranquilla","dpto":"Atlántico","precio":9587000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":105340,"fecha":"2016-02-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"UNIVERSIDAD LIBRE","ciudad":"Pereira","dpto":"Risaralda","precio":11186000.0,"dem2020":21,"dem2021":32,"dem2022":16,"dem2023":13,"dem2024":0,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":58,"sector":"PRIVADO","snies":102259,"fecha":"2013-01-29","acred":"Registro calificado"},{"prog":"MAESTRIA EN DIRECCIÓN DE EMPRESAS, MBA","univ":"UNIVERSIDAD LIBRE","ciudad":"San José de Cúcuta","dpto":"Norte de Santander","precio":10963000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":110331,"fecha":"2021-07-01","acred":"Registro calificado"},{"prog":"MAESTRIA EN EN ADMINISTRACION (MBA)","univ":"UNIVERSIDAD DE MEDELLIN","ciudad":"Medellín","dpto":"Antioquia","precio":11112000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":52254,"fecha":"2019-09-19","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION","univ":"UNIVERSIDAD DE LOS ANDES - PRES","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":39960000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":40,"sector":"PRIVADO","snies":1575,"fecha":"2019-12-18","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN (MBA)","univ":"UNIVERSIDAD DE LOS ANDES - VIRT","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":31625000.0,"dem2020":null,"dem2021":25,"dem2022":50,"dem2023":53,"dem2024":33,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":38,"sector":"PRIVADO","snies":110209,"fecha":"2021-05-21","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCIOS - MBA","univ":"CORPORACION UNIVERSIDAD PILOTO DE COLOMBIA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":8238010.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":1,"modal":"VIRTUAL","sems":4,"periodicidad":"PERIODOS","cred":42,"sector":"PRIVADO","snies":116740,"fecha":"2024-03-07","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"UNIVERSIDAD AUTONOMA DE BUCARAMANGA-UNAB-","ciudad":"Bucaramanga","dpto":"Santander","precio":11324940.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":103650,"fecha":"2020-11-18","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION Y DIRECCION DE EMPRESAS - MBA","univ":"UNIVERSIDAD AUTONOMA DE BUCARAMANGA-UNAB-","ciudad":"Bucaramanga","dpto":"Santander","precio":15240500.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":106192,"fecha":"2023-06-27","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCIOS","univ":"UNIVERSIDAD AUTONOMA DE MANIZALES","ciudad":"Manizales","dpto":"Caldas","precio":12973300.0,"dem2020":7,"dem2021":9,"dem2022":14,"dem2023":11,"dem2024":3,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":53655,"fecha":"2008-05-09","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION","univ":"UNIVERSIDAD ICESI","ciudad":"Santiago de Cali","dpto":"Valle del Cauca","precio":19990000.0,"dem2020":58,"dem2021":53,"dem2022":80,"dem2023":59,"dem2024":59,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":2004,"fecha":"2018-02-15","acred":"Acreditación de alta calidad"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS","univ":"UNIVERSIDAD AUTONOMA DE OCCIDENTE","ciudad":"Santiago de Cali","dpto":"Valle del Cauca","precio":13364000.0,"dem2020":68,"dem2021":13,"dem2022":32,"dem2023":27,"dem2024":23,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":90793,"fecha":"2010-09-08","acred":"Registro calificado","uao_ref":true},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCIOS","univ":"UNIVERSIDAD DE IBAGUE","ciudad":"Ibagué","dpto":"Tolima","precio":9627250.5,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":107428,"fecha":"2025-08-19","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS-MBA","univ":"UNIVERSIDAD TECNOLOGICA DE BOLIVAR","ciudad":"Cartagena de Indias","dpto":"Bolívar","precio":17900000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":116438,"fecha":"2023-12-18","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION DE NEGOCIOS, MBA.","univ":"CORPORACIÓN UNIVERSIDAD DEL SINU - ELIAS BECHARA ZAINUM - UNISINU -","ciudad":"Montería","dpto":"Córdoba","precio":11775000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"PRIVADO","snies":104411,"fecha":"2015-05-04","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"CORPORACIÓN UNIVERSIDAD DEL SINU - ELIAS BECHARA ZAINUM - UNISINU -","ciudad":"Cartagena de Indias","dpto":"Bolívar","precio":7785225.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":49,"sector":"PRIVADO","snies":116784,"fecha":"2024-03-14","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN DE ORGANIZACIONES","univ":"UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA UNAD","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":11100000.0,"dem2020":21,"dem2021":9,"dem2022":4,"dem2023":12,"dem2024":12,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"OFICIAL","snies":90866,"fecha":"2024-03-11","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"POLITECNICO COLOMBIANO JAIME ISAZA CADAVID","ciudad":"Medellín","dpto":"Antioquia","precio":null,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":49,"sector":"OFICIAL","snies":117126,"fecha":"2024-08-05","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"INSTITUCION UNIVERSITARIA DE ENVIGADO","ciudad":"Envigado","dpto":"Antioquia","precio":13665600.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":40,"sector":"OFICIAL","snies":116352,"fecha":"2024-01-15","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS-MBA","univ":"COLEGIO DE ESTUDIOS SUPERIORES DE ADMINISTRACION-CESA-","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":30328000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":54,"sector":"PRIVADO","snies":105710,"fecha":"2023-05-09","acred":"Registro calificado"},{"prog":"MAESTRÍA EN DIRECCIÓN DE EMPRESAS-MBA","univ":"FUNDACIÓN UNIVERSITARIA JUAN N. CORPAS","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":null,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":0,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":117277,"fecha":"2024-09-26","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN-MBA","univ":"UNIVERSIDAD CATÓLICA LUIS AMIGÓ","ciudad":"Medellín","dpto":"Antioquia","precio":9953988.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":102987,"fecha":"2013-12-23","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"FUNDACION UNIVERSITARIA MARIA CANO","ciudad":"Medellín","dpto":"Antioquia","precio":10725092.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":52,"sector":"PRIVADO","snies":117527,"fecha":"2025-01-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"FUNDACION UNIVERSITARIA MARIA CANO","ciudad":"Medellín","dpto":"Antioquia","precio":10725092.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":52,"sector":"PRIVADO","snies":117526,"fecha":"2025-01-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN INTERNACIONAL","univ":"POLITECNICO GRANCOLOMBIANO","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":8900000.0,"dem2020":null,"dem2021":0,"dem2022":0,"dem2023":0,"dem2024":0,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":110181,"fecha":"2021-06-02","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN-MBA","univ":"FUNDACION UNIVERSITARIA-CEIPA-","ciudad":"Sabaneta","dpto":"Antioquia","precio":16868968.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":107384,"fecha":"2025-10-21","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN-MBA","univ":"FUNDACION UNIVERSITARIA-CEIPA-","ciudad":"Sabaneta","dpto":"Antioquia","precio":16868968.0,"dem2020":17,"dem2021":16,"dem2022":13,"dem2023":23,"dem2024":9,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":107384,"fecha":"2025-10-21","acred":"Registro calificado"},{"prog":"MBA INTERNACIONAL","univ":"FUNDACION UNIVERSITARIA DEL AREA ANDINA","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":10500000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":116009,"fecha":"2023-02-27","acred":"Registro calificado"},{"prog":"MAESTRIA  EN ADMINISTRACION DE EMPRESAS E INNOVACION","univ":"UNIVERSIDAD SIMON BOLIVAR","ciudad":"Barranquilla","dpto":"Atlántico","precio":9965700.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":53497,"fecha":"2008-03-05","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS E INNOVACIÓN","univ":"UNIVERSIDAD SIMON BOLIVAR","ciudad":"San José de Cúcuta","dpto":"Norte de Santander","precio":8706600.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":41,"sector":"PRIVADO","snies":102504,"fecha":"2019-12-18","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACION","univ":"CORPORACION UNIVERSIDAD DE LA COSTA CUC - PRES","ciudad":"Barranquilla","dpto":"Atlántico","precio":10668000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":103837,"fecha":"2022-06-24","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"CORPORACION UNIVERSIDAD DE LA COSTA CUC - VIRT","ciudad":"Barranquilla","dpto":"Atlántico","precio":10668000.0,"dem2020":0,"dem2021":3,"dem2022":3,"dem2023":11,"dem2024":14,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":108750,"fecha":"2019-12-18","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS EN INGENIERÍA - MBA EN INGENIERÍA","univ":"UNIVERSIDAD EAN - VIRT","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":14896000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":0,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":43,"sector":"PRIVADO","snies":116959,"fecha":"2024-06-25","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS EN INGENIERÍA - MBA EN INGENIERÍA","univ":"UNIVERSIDAD EAN - PRES","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":19054000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":43,"sector":"PRIVADO","snies":116958,"fecha":"2024-06-25","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN MBA","univ":"UNIVERSIDAD EIA","ciudad":"Envigado","dpto":"Antioquia","precio":23660000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":48,"sector":"PRIVADO","snies":109519,"fecha":"2020-07-06","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"CORPORACION UNIVERSITARIA MINUTO DE DIOS -UNIMINUTO-BOGOTÁ","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":11022300.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":57,"sector":"PRIVADO","snies":108462,"fecha":"2019-12-04","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"CORPORACION UNIVERSITARIA MINUTO DE DIOS -UNIMINUTO-BUCARAMANGA","ciudad":"Bucaramanga","dpto":"Santander","precio":5682800.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":44,"sector":"PRIVADO","snies":116808,"fecha":"2024-04-11","acred":"Registro calificado"},{"prog":"MAESTRIA EN ADMINISTRACIÓN DE EMPRESAS","univ":"CORPORACION UNIVERSITARIA MINUTO DE DIOS -UNIMINUTO-VIRT","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":7931000.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":57,"dem2024":123,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":111486,"fecha":"2023-03-21","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS - MBA","univ":"CORPORACION UNIVERSITARIA IBEROAMERICANA - PRES","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":8824065.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":118301,"fecha":"2025-06-13","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS - MBA","univ":"CORPORACION UNIVERSITARIA IBEROAMERICANA - VIRT","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":7508816.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":42,"sector":"PRIVADO","snies":118302,"fecha":"2025-06-13","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS - MBA","univ":"UNIVERSIDAD DE SANTANDER - UDES","ciudad":"Bucaramanga","dpto":"Santander","precio":10762400.0,"dem2020":null,"dem2021":16,"dem2022":27,"dem2023":22,"dem2024":17,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":108994,"fecha":"2020-01-22","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD DE INVESTIGACION Y DESARROLLO - UDI","ciudad":"Bucaramanga","dpto":"Santander","precio":null,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":56,"sector":"PRIVADO","snies":105073,"fecha":"2015-11-03","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE NEGOCISO MBA","univ":"COLEGIO MAYOR DEL CAUCA","ciudad":"Popayán","dpto":"Cauca","precio":9903970.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":0,"modal":"PRESENCIAL","sems":4,"periodicidad":"SEMESTRAL","cred":48,"sector":"OFICIAL","snies":117273,"fecha":"2024-10-04","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS- MBA","univ":"INSTITUCIÓN UNIVERSITARIA DE BARRANQUILLA - IUB","ciudad":"Barranquilla","dpto":"Atlántico","precio":13007473.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":48,"sector":"OFICIAL","snies":117571,"fecha":"2024-12-24","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN","univ":"UNIVERSIDAD ECCI","ciudad":"Bogotá, D.C.","dpto":"Bogotá, D.C.","precio":7210200.0,"dem2020":null,"dem2021":10,"dem2022":42,"dem2023":78,"dem2024":35,"modal":"VIRTUAL","sems":4,"periodicidad":"SEMESTRAL","cred":45,"sector":"PRIVADO","snies":110237,"fecha":"2021-06-17","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"CORPORACION UNIVERSITARIA AMERICANA - PRES","ciudad":"Medellín","dpto":"Antioquia","precio":11622291.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":null,"modal":"PRESENCIAL","sems":3,"periodicidad":"SEMESTRAL","cred":43,"sector":"PRIVADO","snies":117317,"fecha":"2024-07-22","acred":"Registro calificado"},{"prog":"MAESTRÍA EN ADMINISTRACIÓN - MBA","univ":"CORPORACION UNIVERSITARIA AMERICANA - VIRT","ciudad":"Medellín","dpto":"Antioquia","precio":11622291.0,"dem2020":null,"dem2021":null,"dem2022":null,"dem2023":null,"dem2024":147,"modal":"VIRTUAL","sems":3,"periodicidad":"SEMESTRAL","cred":43,"sector":"PRIVADO","snies":117318,"fecha":"2024-07-22","acred":"Registro calificado"}]
+const REGION_DEPTS = ['Valle del Cauca','Cauca','Nariño','Risaralda','Quindío','Caldas'];
+const UAO_PRICE = 13364000;
+const COLORS = ['#8C0F13','#1d4ed8','#15803d','#d97706','#7c3aed','#0284c7','#dc2626','#059669','#c2410c','#1e40af'];
+
+// Percentile calculation
+function percentile(arr, p) {
+  if (!arr.length) return 0;
+  const s = [...arr].sort((a,b)=>a-b);
+  const idx = (p/100)*(s.length-1);
+  const lo = Math.floor(idx), hi = Math.ceil(idx);
+  return s[lo] + (s[hi]-s[lo])*(idx-lo);
+}
+
+const digPrivPrices = NATIONAL_DATA
+  .filter(d => (d.modal==='VIRTUAL'||d.modal==='HIBRIDA') && d.sector==='PRIVADO' && d.precio && d.precio < 50000000 && !d.uao && !d.uao_ref)
+  .map(d=>d.precio).sort((a,b)=>a-b);
+
+const P25= 11391145;//percentile(digPrivPrices,25);
+const P40= 12376547;//percentile(digPrivPrices,40);
+const P50= 13168650;//percentile(digPrivPrices,50);
+const P60= 13866288; //percentile(digPrivPrices,60);
+const P75= 16456906; //percentile(digPrivPrices,75);
+const P80= 17132400; //percentile(digPrivPrices,80);
+const PMIN= 7913000; //digPrivPrices[0]||0;
+const PMAX= 19990000; //digPrivPrices[digPrivPrices.length-1]||0;
+
+// Update dynamic KPI price cards
+(function(){
+  const medEl=document.getElementById('kpi-median-price');
+  if(medEl)medEl.textContent='$'+(P50/1000000).toFixed(1)+'M';
+  const medEl2=document.getElementById('kpi-dig-median');
+  if(medEl2)medEl2.textContent='$'+(P50/1000000).toFixed(1)+'M';
+})();
+
+function fmt(n){return n?'$'+(n/1000000).toFixed(1)+'M':'N/D';}
+function fmtFull(n){return n?'$'+Math.round(n).toLocaleString('es-CO'):'N/D';}
+
+
+// ============================================================
+// FORMAT helpers
+function modalBadge(m){
+  if(m==='VIRTUAL') return '<span class="badge b-virt">VIRTUAL</span>';
+  if(m==='HIBRIDA') return '<span class="badge b-hib">HÍBRIDA</span>';
+  return '<span class="badge b-pres">PRESENCIAL</span>';
+}
+function sectorBadge(s){
+  return s==='PRIVADO'?'<span class="badge b-priv">PRIVADO</span>':'<span class="badge b-ofic">OFICIAL</span>';
+}
+function acredBadge(a){
+  if(!a||a==='nan') return '';
+  if(a.includes('alta')) return '<span class="badge b-acred">Alta calidad</span>';
+  return '<span class="badge" style="background:#f1f5f9;color:#475569;font-size:9px;">Reg. Cal.</span>';
+}
+function truncate(s,n){return s&&s.length>n?s.substring(0,n)+'…':s||'';}
+
+// ============================================================
+// TABLE: BASE COMPLETA
+let sortColBase=null,sortDirBase=-1;
+const dptos=[...new Set(NATIONAL_DATA.map(d=>d.dpto))].sort();
+const selDpto=document.getElementById('fil-dpto');
+dptos.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;selDpto.appendChild(o);});
+
+function filterBase(){
+  const q=(document.getElementById('search-base').value||'').toLowerCase();
+  const fm=document.getElementById('fil-modal').value;
+  const fs=document.getElementById('fil-sector').value;
+  const fd=document.getElementById('fil-dpto').value;
+  let data=NATIONAL_DATA.filter(d=>{
+    if(fm&&d.modal!==fm)return false;
+    if(fs&&d.sector!==fs)return false;
+    if(fd&&d.dpto!==fd)return false;
+    if(q){const t=(d.prog+d.univ+d.ciudad).toLowerCase();if(!t.includes(q))return false;}
+    return true;
+  });
+  if(sortColBase){
+    data=data.slice().sort((a,b)=>{
+      const av=a[sortColBase],bv=b[sortColBase];
+      if(av==null&&bv==null)return 0;
+      if(av==null)return 1;
+      if(bv==null)return -1;
+      return sortDirBase*(av-bv);
+    });
+  }
+  document.getElementById('cnt-base').textContent=data.length+' programas';
+  const tb=document.getElementById('tbody-base');
+  tb.innerHTML='';
+  data.forEach((d,i)=>{
+    const tr=document.createElement('tr');
+    if(d.uao||d.uao_ref)tr.className='uao-row';
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${truncate(d.prog,55)}${(d.uao||d.uao_ref)?'&nbsp;<span class="badge b-uao">Ref. UAO</span>':""}</td>
+      <td style="font-size:11px;">${truncate(d.univ,40)}</td>
+      <td>${d.ciudad||''}</td>
+      <td>${d.dpto||''}</td>
+      <td>${modalBadge(d.modal)}</td>
+      <td style="text-align:center;">${d.sems||'N/D'}</td>
+      <td style="font-size:10px;">${d.periodicidad||''}</td>
+      <td style="text-align:center;">${d.cred||'N/D'}</td>
+      <td style="text-align:right;font-weight:600;">${d.precio?fmtFull(d.precio):'N/D'}</td>
+      <td>${sectorBadge(d.sector)}</td>
+      <td style="font-size:10px;">${d.snies||'N/D'}</td>
+      <td style="font-size:10px;">${d.fecha||'N/D'}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+function sortBase(col){
+  if(sortColBase===col)sortDirBase*=-1;
+  else{sortColBase=col;sortDirBase=-1;}
+  ['sems','cred','precio'].forEach(c=>{
+    const el=document.getElementById('si-'+c);
+    if(el)el.textContent=c===col?(sortDirBase===-1?'↓':'↑'):'↕';
+  });
+  filterBase();
+}
+filterBase();
+
+// TABLE: DIGITAL
+function renderDigTable(){
+  const dig=NATIONAL_DATA.filter(d=>d.modal==='VIRTUAL'||d.modal==='HIBRIDA');
+  document.getElementById('cnt-dig').textContent=dig.length+' programas';
+  const tb=document.getElementById('tbody-dig');
+  tb.innerHTML='';
+  dig.forEach((d,i)=>{
+    const tr=document.createElement('tr');
+    if(d.uao||d.uao_ref)tr.className='uao-row';
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${truncate(d.prog,55)}${(d.uao||d.uao_ref)?'&nbsp;<span class="badge b-uao">Ref. UAO</span>':""}</td>
+      <td style="font-size:11px;">${truncate(d.univ,40)}</td>
+      <td>${d.ciudad||''}</td>
+      <td>${modalBadge(d.modal)}</td>
+      <td style="text-align:center;">${d.cred||'N/D'}</td>
+      <td style="text-align:center;">${d.sems||'N/D'}</td>
+      <td style="text-align:right;font-weight:600;">${d.precio?fmtFull(d.precio):'N/D'}</td>
+      <td>${sectorBadge(d.sector)}</td>
+      <td style="font-size:10px;">${d.snies||'N/D'}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+renderDigTable();
+
+// TABLE: REGIONAL
+function renderRegTable(){
+  const reg=NATIONAL_DATA.filter(d=>REGION_DEPTS.includes(d.dpto));
+  document.getElementById('cnt-reg').textContent=reg.length+' programas';
+  const tb=document.getElementById('tbody-reg');
+  tb.innerHTML='';
+  reg.forEach((d,i)=>{
+    const tr=document.createElement('tr');
+    if(d.uao||d.uao_ref)tr.className='uao-row';
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${truncate(d.prog,50)}${(d.uao||d.uao_ref)?'&nbsp;<span class="badge b-uao">Ref. UAO</span>':""}</td>
+      <td style="font-size:11px;">${truncate(d.univ,38)}</td>
+      <td>${d.ciudad||''}</td>
+      <td>${d.dpto||''}</td>
+      <td>${modalBadge(d.modal)}</td>
+      <td style="text-align:center;">${d.cred||'N/D'}</td>
+      <td style="text-align:center;">${d.sems||'N/D'}</td>
+      <td style="text-align:right;font-weight:600;">${d.precio?fmtFull(d.precio):'N/D'}</td>
+      <td>${sectorBadge(d.sector)}</td>
+      <td>${acredBadge(d.acred)}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+renderRegTable();
+
+// TABLE: DEMANDA
+function renderDemTable(){
+  const allDig=NATIONAL_DATA.filter(d=>
+    d.modal==='VIRTUAL'||d.modal==='HIBRIDA'||
+    (d.modal==='PRESENCIAL'&&REGION_DEPTS.includes(d.dpto))
+  );
+  allDig.sort((a,b)=>{
+    const ar=REGION_DEPTS.includes(a.dpto)?0:1;
+    const br=REGION_DEPTS.includes(b.dpto)?0:1;
+    return ar-br;
+  });
+  const tb=document.getElementById('tbody-dem');
+  tb.innerHTML='';
+  allDig.forEach(d=>{
+    const isReg=REGION_DEPTS.includes(d.dpto);
+    const vals=[d.dem2020,d.dem2021,d.dem2022,d.dem2023,d.dem2024];
+    const hasData=vals.some(v=>v!=null);
+    const v23=d.dem2023;
+    const v24=d.dem2024;
+    let trend='<span style="color:#9ca3af;">—</span>';
+    if(v23!=null&&v24!=null){
+      if(v24>v23) trend='<span class="trend-up">↑ Alza</span>';
+      else if(v24<v23) trend='<span class="trend-dn">↓ Baja</span>';
+      else trend='<span style="color:#6b7280;font-weight:600;">= Estable</span>';
+    }
+    const tr=document.createElement('tr');
+    if(d.uao||d.uao_ref)tr.className='uao-row';
+    tr.innerHTML=`
+      <td style="font-size:11px;">${truncate(d.prog,45)}${(d.uao||d.uao_ref)?'&nbsp;<span class="badge b-uao" style="font-size:8px;">UAO</span>':''}</td>
+      <td style="font-size:11px;">${truncate(d.univ,35)}</td>
+      <td>${modalBadge(d.modal)}</td>
+      <td><span class="badge ${isReg?'b-region':'b-nac'}">${isReg?'REGIÓN':'NACIONAL'}</span></td>
+      <td style="text-align:center;">${d.dem2020!=null?d.dem2020:'N/D'}</td>
+      <td style="text-align:center;">${d.dem2021!=null?d.dem2021:'N/D'}</td>
+      <td style="text-align:center;">${d.dem2022!=null?d.dem2022:'N/D'}</td>
+      <td style="text-align:center;">${d.dem2023!=null?d.dem2023:'N/D'}</td>
+      <td style="text-align:center;">${d.dem2024!=null?d.dem2024:'N/D'}</td>
+      <td>${trend}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+renderDemTable();
+
+// ============================================================
+// CHARTS
+const cfg = {paper_bgcolor:'transparent',plot_bgcolor:'transparent',margin:{t:10,b:30,l:10,r:10},
+  font:{family:'Barlow, sans-serif',size:11,color:'#374151'}};
+
+// ch_01 — Donut modalidad
+(function(){
+  const counts={PRESENCIAL:0,VIRTUAL:0,HIBRIDA:0};
+  NATIONAL_DATA.forEach(d=>counts[d.modal]=(counts[d.modal]||0)+1);
+  Plotly.newPlot('ch_01',[{
+    type:'pie',hole:.5,
+    labels:['Presencial','Virtual','Híbrida'],
+    values:[counts.PRESENCIAL,counts.VIRTUAL,counts.HIBRIDA],
+    marker:{colors:['#8C0F13','#1d4ed8','#e879a0']},
+    textinfo:'percent+label',
+    textfont:{size:12}
+  }],{...cfg,showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_02 — Barras horizontales departamentos
+(function(){
+  const counts={};
+  NATIONAL_DATA.forEach(d=>counts[d.dpto]=(counts[d.dpto]||0)+1);
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  Plotly.newPlot('ch_02',[{
+    type:'bar',orientation:'h',
+    y:sorted.map(e=>e[0].replace('Bogotá, D.C.','Bogotá')),
+    x:sorted.map(e=>e[1]),
+    marker:{color:COLORS[0]},
+    text:sorted.map(e=>e[1]),textposition:'outside'
+  }],{...cfg,margin:{t:10,b:30,l:120,r:40},xaxis:{showgrid:true},yaxis:{automargin:true}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_03 — Naming categories (div hidden — skipped)
+/* (function(){
+  const cats={'Adm. Empresas':0,'Adm. Negocios':0,'Adm. General':0,'MBA explícito':0,'Dirección':0,'Gerencia':0,'Otro':0};
+  NATIONAL_DATA.forEach(d=>{
+    const p=d.prog.toUpperCase();
+    if(p.includes('EMPRESAS'))cats['Adm. Empresas']++;
+    else if(p.includes('NEGOCIOS'))cats['Adm. Negocios']++;
+    else if(p.startsWith('MBA'))cats['MBA explícito']++;
+    else if(p.includes('DIRECCIÓN')||p.includes('DIRECCION'))cats['Dirección']++;
+    else if(p.includes('GERENCIA'))cats['Gerencia']++;
+    else if(p.includes('ADMINISTRACIÓN')||p.includes('ADMINISTRACION'))cats['Adm. General']++;
+    else cats['Otro']++;
+  });
+  const sorted=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  Plotly.newPlot('ch_03',[{
+    type:'bar',
+    x:sorted.map(e=>e[0]),
+    y:sorted.map(e=>e[1]),
+    marker:{color:COLORS},
+    text:sorted.map(e=>e[1]),textposition:'outside'
+  }],{...cfg,margin:{t:20,b:60,l:40,r:20},xaxis:{tickangle:-20},yaxis:{showgrid:true}},{responsive:true,displayModeBar:false});
+})(); */
+
+// ch_04 — Barras V vs H
+(function(){
+  const v=NATIONAL_DATA.filter(d=>d.modal==='VIRTUAL').length;
+  const h=NATIONAL_DATA.filter(d=>d.modal==='HIBRIDA').length;
+  Plotly.newPlot('ch_04',[{
+    type:'bar',
+    x:['Virtual','Híbrida'],
+    y:[v,h],
+    marker:{color:['#1d4ed8','#e879a0']},
+    text:[v,h],textposition:'outside'
+  }],{...cfg,margin:{t:20,b:40,l:40,r:20},yaxis:{showgrid:true}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_05 — Digitales por departamento
+(function(){
+  const counts={};
+  NATIONAL_DATA.filter(d=>d.modal==='VIRTUAL'||d.modal==='HIBRIDA')
+    .forEach(d=>counts[d.dpto]=(counts[d.dpto]||0)+1);
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  Plotly.newPlot('ch_05',[{
+    type:'bar',orientation:'h',
+    y:sorted.map(e=>e[0].replace('Bogotá, D.C.','Bogotá')),
+    x:sorted.map(e=>e[1]),
+    marker:{color:COLORS[1]},
+    text:sorted.map(e=>e[1]),textposition:'outside'
+  }],{...cfg,margin:{t:10,b:30,l:100,r:40},xaxis:{showgrid:true},yaxis:{automargin:true}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_06 — Donut sector digital
+(function(){
+  const priv=NATIONAL_DATA.filter(d=>(d.modal==='VIRTUAL'||d.modal==='HIBRIDA')&&d.sector==='PRIVADO').length;
+  const ofic=NATIONAL_DATA.filter(d=>(d.modal==='VIRTUAL'||d.modal==='HIBRIDA')&&d.sector==='OFICIAL').length;
+  Plotly.newPlot('ch_06',[{
+    type:'pie',hole:.5,
+    labels:['Privado','Oficial'],
+    values:[priv,ofic],
+    marker:{colors:['#d97706','#15803d']},
+    textinfo:'percent+label'
+  }],{...cfg,margin:{t:10,b:10,l:10,r:10},showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_07 — Barras ciudades región
+(function(){
+  const reg=NATIONAL_DATA.filter(d=>REGION_DEPTS.includes(d.dpto));
+  const counts={};
+  reg.forEach(d=>counts[d.ciudad]=(counts[d.ciudad]||0)+1);
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  Plotly.newPlot('ch_07',[{
+    type:'bar',
+    x:sorted.map(e=>e[0]),
+    y:sorted.map(e=>e[1]),
+    marker:{color:COLORS},
+    text:sorted.map(e=>e[1]),textposition:'outside'
+  }],{...cfg,margin:{t:20,b:60,l:40,r:20},xaxis:{tickangle:-30,automargin:true},yaxis:{showgrid:true}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_08 — Donut modal regional
+(function(){
+  const reg=NATIONAL_DATA.filter(d=>REGION_DEPTS.includes(d.dpto));
+  const counts={PRESENCIAL:0,VIRTUAL:0,HIBRIDA:0};
+  reg.forEach(d=>counts[d.modal]=(counts[d.modal]||0)+1);
+  Plotly.newPlot('ch_08',[{
+    type:'pie',hole:.5,
+    labels:['Presencial','Híbrida'],
+    values:[counts.PRESENCIAL,counts.HIBRIDA],
+    marker:{colors:['#8C0F13','#e879a0']},
+    textinfo:'percent+label'
+  }],{...cfg,margin:{t:10,b:10,l:10,r:10},showlegend:true,legend:{orientation:'h',y:-0.1}},{responsive:true,displayModeBar:false});
+})();
+
+// ch_09 — Ranking precios programas regionales
+(function(){
+  const reg=NATIONAL_DATA
+    .filter(d=>REGION_DEPTS.includes(d.dpto)&&d.precio&&d.precio<50000000)
+    .sort((a,b)=>a.precio-b.precio);
+  const labels=reg.map(d=>{
+    const univ=d.univ.length>32?d.univ.substring(0,32)+'…':d.univ;
+    const mod=d.modal==='PRESENCIAL'?'Pres.':d.modal==='HIBRIDA'?'Híb.':'Virt.';
+    return `${univ} · ${d.ciudad} [${mod}]`;
+  });
+  const prices=reg.map(d=>d.precio);
+  const colors=reg.map(d=>(d.uao||d.uao_ref)?'#d97706':d.precio<P40?'#15803d':d.precio<P60?'#1d4ed8':d.precio<P75?'#7c3aed':'#8C0F13');
+
+  const traces=[{
+    type:'bar',orientation:'h',
+    y:labels,x:prices,
+    marker:{color:colors},
+    text:prices.map(p=>'$'+(p/1000000).toFixed(1)+'M'),
+    textposition:'outside',
+    name:'Precio/Semestre'
+  }];
+  const layout={
+    ...cfg,
+    margin:{t:30,b:60,l:340,r:90},
+    xaxis:{showgrid:true,title:'Precio por semestre (COP)',tickformat:',.0f'},
+    yaxis:{automargin:true,tickfont:{size:11}},
+    shapes:[
+      {type:'line',x0:P40,x1:P40,y0:-0.5,y1:reg.length-0.5,line:{color:'#15803d',dash:'dot',width:2}},
+      {type:'line',x0:P50,x1:P50,y0:-0.5,y1:reg.length-0.5,line:{color:'#15803d',width:2}},
+      {type:'line',x0:P60,x1:P60,y0:-0.5,y1:reg.length-0.5,line:{color:'#dc2626',dash:'dot',width:2}},
+      {type:'line',x0:UAO_PRICE,x1:UAO_PRICE,y0:-0.5,y1:reg.length-0.5,line:{color:'#d97706',dash:'dash',width:3}},
+      {type:'rect',x0:P40,x1:P60,y0:-0.5,y1:reg.length-0.5,
+       fillcolor:'rgba(29,78,216,0.07)',line:{width:0}},
+    ],
+    annotations:[
+      {x:P50,y:reg.length-0.5,text:'P50 Mediana',showarrow:false,font:{color:'#15803d',size:10},yshift:10},
+      {x:UAO_PRICE,y:reg.length-1.5,text:'UAO',showarrow:false,font:{color:'#d97706',size:10},xshift:20},
+    ]
+  };
+  Plotly.newPlot('ch_09',traces,layout,{responsive:true,displayModeBar:false});
+})();
+
+// ch_10 — Demanda regional grouped bar (mismos programas de ch_09)
+(function(){
+  const allDig=NATIONAL_DATA.filter(d=>REGION_DEPTS.includes(d.dpto)&&d.precio&&d.precio<50000000);
+  const years=[2020,2021,2022,2023,2024];
+  const fields=['dem2020','dem2021','dem2022','dem2023','dem2024'];
+  // Only programs with at least one data point
+  const withData=allDig.filter(d=>fields.some(f=>d[f]!=null));
+  const traces=withData.map((d,i)=>({
+    type:'bar',
+    name:d.univ.substring(0,20),
+    x:years,
+    y:fields.map(f=>d[f]||0),
+    marker:{color:COLORS[i%COLORS.length]},
+    opacity:.85,
+  }));
+  Plotly.newPlot('ch_10',traces,{
+    ...cfg,
+    barmode:'group',
+    margin:{t:20,b:50,l:50,r:20},
+    xaxis:{title:'Año',tickvals:years},
+    yaxis:{title:'Inscritos',showgrid:true},
+    legend:{font:{size:9},orientation:'h',y:-0.35},
+    showlegend:true
+  },{responsive:true,displayModeBar:false});
+})();
+
+// ============================================================
+// NAV
+function nav(el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  const id=el.getAttribute('href').slice(1);
+  const sec=document.getElementById(id);
+  if(sec)sec.scrollIntoView({behavior:'smooth'});
+  return false;
+}
+
+// SCROLLSPY
+const sections=['hero','nacional','base','digital','regional','precios','conclusiones','fuentes'];
+window.addEventListener('scroll',()=>{
+  let current=sections[0];
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<120)current=id;
+  });
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.toggle('active',n.getAttribute('href')==='#'+current);
+  });
+},{passive:true});
+
+// ============================================================
+// PDF EXPORT
+const originalSizes={};
+function resizeChartsForPrint(){
+  const printW=720;
+  document.querySelectorAll('[id^="ch_"]').forEach(div=>{
+    if(!div._fullLayout)return;
+    const h=parseInt(div.style.height)||div.offsetHeight||280;
+    originalSizes[div.id]={width:div._fullLayout.width,height:div._fullLayout.height};
+    Plotly.relayout(div.id,{width:printW,height:Math.min(h,250),autosize:false});
+  });
+}
+function restoreChartsAfterPrint(){
+  document.querySelectorAll('[id^="ch_"]').forEach(div=>{
+    if(!div._fullLayout)return;
+    const orig=originalSizes[div.id];
+    if(orig)Plotly.relayout(div.id,{width:orig.width,height:orig.height,autosize:true});
+    else Plotly.relayout(div.id,{autosize:true});
+    Plotly.Plots.resize(div.id);
+  });
+}
+window.addEventListener('beforeprint',resizeChartsForPrint);
+window.addEventListener('afterprint',restoreChartsAfterPrint);
+
+function exportPDF(){
+  const btn=document.getElementById('btn-pdf');
+  btn.textContent='⏳ Preparando impresión...';
+  btn.disabled=true;
+  resizeChartsForPrint();
+  setTimeout(()=>{
+    window.print();
+    btn.textContent='⬇ Descargar PDF Ejecutivo';
+    btn.disabled=false;
+  },900);
+}
+
+// ResizeObserver
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(()=>{
+    document.querySelectorAll('[id^="ch_"]').forEach(div=>{
+      if(div._fullLayout)Plotly.Plots.resize(div.id);
+    });
+  });
+  ro.observe(document.getElementById('main'));
+}
+</script>
+</body>
+</html>
