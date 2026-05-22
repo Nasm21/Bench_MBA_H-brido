@@ -485,9 +485,9 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
       <div class="trend up">UAO: $13.4M → rango Premium (P75–P80)</div>
     </div>
     <div class="kpi-card">
-      <div class="val">1</div>
-      <div class="lbl">Competidor híbrido en la región</div>
-      <div class="trend up">🚀 Monopolio digital efectivo</div>
+      <div class="val">0</div>
+      <div class="lbl">Competidores híbridos en la región</div>
+      <div class="trend up">🚀 Sería un Monopolio digital efectivo</div>
     </div>
   </div>
 
@@ -685,8 +685,18 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
   <!-- Tabla programas digitales -->
   <div class="table-card mt20">
     <div class="table-toolbar">
-      <span style="font-size:13px;font-weight:700;color:var(--primary);">Programas Virtuales + Híbridos — Todos los sectores</span>
-      <span class="table-counter" id="cnt-dig">23 programas</span>
+      <input type="text" id="search-dig" placeholder="🔍 Buscar programa, universidad, ciudad…" oninput="filterDig()">
+      <select id="fil-dig-modal" onchange="filterDig()">
+        <option value="">Modalidad: Todas</option>
+        <option value="VIRTUAL">Virtual</option>
+        <option value="HIBRIDA">Híbrida</option>
+      </select>
+      <select id="fil-dig-sector" onchange="filterDig()">
+        <option value="">Sector: Todos</option>
+        <option value="PRIVADO">Privado</option>
+        <option value="OFICIAL">Oficial</option>
+      </select>
+      <span class="table-counter" id="cnt-dig"></span>
     </div>
     <div class="table-scroll">
       <table>
@@ -699,7 +709,7 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
             <th>Modalidad</th>
             <th>Créditos</th>
             <th>Semestres</th>
-            <th>Precio/Per.</th>
+            <th onclick="sortDig('precio')" style="cursor:pointer;">Precio/Per. <span id="si-dig-precio">↕</span></th>
             <th>Sector</th>
             <th>SNIES</th>
           </tr>
@@ -727,8 +737,8 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
       <div class="trend warn">8 programas · Cali: 6</div>
     </div>
     <div class="kpi-card2 orange">
-      <div class="val">1</div>
-      <div class="lbl">Programa Híbrido en la Región</div>
+      <div class="val">0</div>
+      <div class="lbl">Programas Híbridos en la Región</div>
       <div class="trend up">✅ Monopolio efectivo UAO</div>
     </div>
     <div class="kpi-card2 green">
@@ -741,8 +751,13 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
   <!-- Tabla regional -->
   <div class="table-card">
     <div class="table-toolbar">
-      <span style="font-size:13px;font-weight:700;color:var(--primary);">Programas MBA — Región Suroccidente + Eje Cafetero</span>
-      <span class="table-counter" id="cnt-reg">18 programas</span>
+      <input type="text" id="search-reg" placeholder="🔍 Buscar programa, universidad, ciudad…" oninput="filterReg()">
+      <select id="fil-reg-sector" onchange="filterReg()">
+        <option value="">Sector: Todos</option>
+        <option value="PRIVADO">Privado</option>
+        <option value="OFICIAL">Oficial</option>
+      </select>
+      <span class="table-counter" id="cnt-reg"></span>
     </div>
     <div class="table-scroll">
       <table>
@@ -756,7 +771,7 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
             <th>Modalidad</th>
             <th>Créditos</th>
             <th>Semestres</th>
-            <th>Precio/Per.</th>
+            <th onclick="sortReg('precio')" style="cursor:pointer;">Precio/Per. <span id="si-reg-precio">↕</span></th>
             <th>Sector</th>
             <th>Acreditación</th>
           </tr>
@@ -806,14 +821,37 @@ tbody td{padding:9px 12px;color:var(--text);vertical-align:middle;}
   <!-- Tabla de demanda -->
   <div class="chart-card mt20">
     <h4>Demanda Histórica 2020–2024 — Programas Regionales y Digitales Nacionales<span>Datos SNIES disponibles</span></h4>
+    <div class="table-toolbar" style="margin-bottom:10px;">
+      <input type="text" id="search-dem" placeholder="🔍 Buscar programa, universidad…" oninput="filterDem()">
+      <select id="fil-dem-modal" onchange="filterDem()">
+        <option value="">Modalidad: Todas</option>
+        <option value="VIRTUAL">Virtual</option>
+        <option value="HIBRIDA">Híbrida</option>
+        <option value="PRESENCIAL">Presencial</option>
+      </select>
+      <select id="fil-dem-ambito" onchange="filterDem()">
+        <option value="">Ámbito: Todos</option>
+        <option value="region">Región</option>
+        <option value="nacional">Nacional</option>
+      </select>
+      <select id="fil-dem-tend" onchange="filterDem()">
+        <option value="">Tendencia: Todas</option>
+        <option value="alza">↑ Alza</option>
+        <option value="baja">↓ Baja</option>
+        <option value="estable">= Estable</option>
+      </select>
+      <span class="table-counter" id="cnt-dem"></span>
+    </div>
     <div class="table-scroll">
       <table>
         <thead>
           <tr>
             <th>Programa</th>
             <th>Universidad</th>
+            <th>Ciudad</th>
             <th>Modalidad</th>
             <th>Ámbito</th>
+            <th onclick="sortDem('precio')" style="cursor:pointer;">Precio <span id="si-dem-precio">↕</span></th>
             <th>2020</th>
             <th>2021</th>
             <th>2022</th>
@@ -1310,12 +1348,31 @@ function sortBase(col){
 filterBase();
 
 // TABLE: DIGITAL
-function renderDigTable(){
-  const dig=NATIONAL_DATA.filter(d=>d.modal==='VIRTUAL'||d.modal==='HIBRIDA');
-  document.getElementById('cnt-dig').textContent=dig.length+' programas';
+let sortColDig=null, sortDirDig=-1;
+function filterDig(){
+  const q=(document.getElementById('search-dig').value||'').toLowerCase();
+  const fm=document.getElementById('fil-dig-modal').value;
+  const fs=document.getElementById('fil-dig-sector').value;
+  let data=NATIONAL_DATA.filter(d=>{
+    if(d.modal!=='VIRTUAL'&&d.modal!=='HIBRIDA') return false;
+    if(fm&&d.modal!==fm) return false;
+    if(fs&&d.sector!==fs) return false;
+    if(q){const t=(d.prog+d.univ+d.ciudad).toLowerCase();if(!t.includes(q))return false;}
+    return true;
+  });
+  if(sortColDig){
+    data=data.slice().sort((a,b)=>{
+      const av=a[sortColDig],bv=b[sortColDig];
+      if(av==null&&bv==null)return 0;
+      if(av==null)return 1;
+      if(bv==null)return -1;
+      return sortDirDig*(av-bv);
+    });
+  }
+  document.getElementById('cnt-dig').textContent=data.length+' programas';
   const tb=document.getElementById('tbody-dig');
   tb.innerHTML='';
-  dig.forEach((d,i)=>{
+  data.forEach((d,i)=>{
     const tr=document.createElement('tr');
     if(d.uao||d.uao_ref)tr.className='uao-row';
     tr.innerHTML=`
@@ -1333,15 +1390,39 @@ function renderDigTable(){
     tb.appendChild(tr);
   });
 }
-renderDigTable();
+filterDig();
+function sortDig(col){
+  if(sortColDig===col)sortDirDig*=-1;
+  else{sortColDig=col;sortDirDig=-1;}
+  const el=document.getElementById('si-dig-precio');
+  if(el)el.textContent=sortDirDig===-1?'↓':'↑';
+  filterDig();
+}
 
 // TABLE: REGIONAL
-function renderRegTable(){
-  const reg=NATIONAL_DATA.filter(d=>REGION_DEPTS.includes(d.dpto));
-  document.getElementById('cnt-reg').textContent=reg.length+' programas';
+let sortColReg=null, sortDirReg=-1;
+function filterReg(){
+  const q=(document.getElementById('search-reg').value||'').toLowerCase();
+  const fs=document.getElementById('fil-reg-sector').value;
+  let data=NATIONAL_DATA.filter(d=>{
+    if(!REGION_DEPTS.includes(d.dpto)) return false;
+    if(fs&&d.sector!==fs) return false;
+    if(q){const t=(d.prog+d.univ+d.ciudad).toLowerCase();if(!t.includes(q))return false;}
+    return true;
+  });
+  if(sortColReg){
+    data=data.slice().sort((a,b)=>{
+      const av=a[sortColReg],bv=b[sortColReg];
+      if(av==null&&bv==null)return 0;
+      if(av==null)return 1;
+      if(bv==null)return -1;
+      return sortDirReg*(av-bv);
+    });
+  }
+  document.getElementById('cnt-reg').textContent=data.length+' programas';
   const tb=document.getElementById('tbody-reg');
   tb.innerHTML='';
-  reg.forEach((d,i)=>{
+  data.forEach((d,i)=>{
     const tr=document.createElement('tr');
     if(d.uao||d.uao_ref)tr.className='uao-row';
     tr.innerHTML=`
@@ -1360,27 +1441,63 @@ function renderRegTable(){
     tb.appendChild(tr);
   });
 }
-renderRegTable();
+filterReg();
+function sortReg(col){
+  if(sortColReg===col)sortDirReg*=-1;
+  else{sortColReg=col;sortDirReg=-1;}
+  const el=document.getElementById('si-reg-precio');
+  if(el)el.textContent=sortDirReg===-1?'↓':'↑';
+  filterReg();
+}
 
 // TABLE: DEMANDA
-function renderDemTable(){
-  const allDig=NATIONAL_DATA.filter(d=>
+let sortColDem=null, sortDirDem=-1;
+function filterDem(){
+  const q=(document.getElementById('search-dem').value||'').toLowerCase();
+  const fm=document.getElementById('fil-dem-modal').value;
+  const fa=document.getElementById('fil-dem-ambito').value;
+  const ft=document.getElementById('fil-dem-tend').value;
+  let data=NATIONAL_DATA.filter(d=>
     d.modal==='VIRTUAL'||d.modal==='HIBRIDA'||
     (d.modal==='PRESENCIAL'&&REGION_DEPTS.includes(d.dpto))
   );
-  allDig.sort((a,b)=>{
-    const ar=REGION_DEPTS.includes(a.dpto)?0:1;
-    const br=REGION_DEPTS.includes(b.dpto)?0:1;
-    return ar-br;
+  if(!sortColDem){
+    data.sort((a,b)=>{
+      const ar=REGION_DEPTS.includes(a.dpto)?0:1;
+      const br=REGION_DEPTS.includes(b.dpto)?0:1;
+      return ar-br;
+    });
+  }
+  data=data.filter(d=>{
+    if(fm&&d.modal!==fm) return false;
+    const isReg=REGION_DEPTS.includes(d.dpto);
+    if(fa==='region'&&!isReg) return false;
+    if(fa==='nacional'&&isReg) return false;
+    if(q){const t=(d.prog+d.univ).toLowerCase();if(!t.includes(q))return false;}
+    if(ft){
+      const v23=d.dem2023, v24=d.dem2024;
+      if(v23==null||v24==null) return false;
+      if(ft==='alza'&&v24<=v23) return false;
+      if(ft==='baja'&&v24>=v23) return false;
+      if(ft==='estable'&&v24!==v23) return false;
+    }
+    return true;
   });
+  if(sortColDem){
+    data=data.slice().sort((a,b)=>{
+      const av=a[sortColDem],bv=b[sortColDem];
+      if(av==null&&bv==null)return 0;
+      if(av==null)return 1;
+      if(bv==null)return -1;
+      return sortDirDem*(av-bv);
+    });
+  }
+  document.getElementById('cnt-dem').textContent=data.length+' programas';
   const tb=document.getElementById('tbody-dem');
   tb.innerHTML='';
-  allDig.forEach(d=>{
+  data.forEach(d=>{
     const isReg=REGION_DEPTS.includes(d.dpto);
-    const vals=[d.dem2020,d.dem2021,d.dem2022,d.dem2023,d.dem2024];
-    const hasData=vals.some(v=>v!=null);
-    const v23=d.dem2023;
-    const v24=d.dem2024;
+    const v23=d.dem2023, v24=d.dem2024;
     let trend='<span style="color:#9ca3af;">—</span>';
     if(v23!=null&&v24!=null){
       if(v24>v23) trend='<span class="trend-up">↑ Alza</span>';
@@ -1392,8 +1509,10 @@ function renderDemTable(){
     tr.innerHTML=`
       <td style="font-size:11px;">${truncate(d.prog,45)}${(d.uao||d.uao_ref)?'&nbsp;<span class="badge b-uao" style="font-size:8px;">UAO</span>':''}</td>
       <td style="font-size:11px;">${truncate(d.univ,35)}</td>
+      <td style="font-size:11px;">${d.ciudad||''}</td>
       <td>${modalBadge(d.modal)}</td>
       <td><span class="badge ${isReg?'b-region':'b-nac'}">${isReg?'REGIÓN':'NACIONAL'}</span></td>
+      <td style="text-align:right;font-size:11px;">${fmt(d.precio)}</td>
       <td style="text-align:center;">${d.dem2020!=null?d.dem2020:'N/D'}</td>
       <td style="text-align:center;">${d.dem2021!=null?d.dem2021:'N/D'}</td>
       <td style="text-align:center;">${d.dem2022!=null?d.dem2022:'N/D'}</td>
@@ -1404,7 +1523,14 @@ function renderDemTable(){
     tb.appendChild(tr);
   });
 }
-renderDemTable();
+filterDem();
+function sortDem(col){
+  if(sortColDem===col)sortDirDem*=-1;
+  else{sortColDem=col;sortDirDem=-1;}
+  const el=document.getElementById('si-dem-precio');
+  if(el)el.textContent=sortDirDem===-1?'↓':'↑';
+  filterDem();
+}
 
 // ============================================================
 // CHARTS
